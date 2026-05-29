@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Commands Hub &amp; Workbench</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg-dark: #080b10;
+    --card-bg: #0d1117;
+    --border-color: #21262d;
+    --text-main: #f0f6fc;
+    --text-muted: #8b949e;
+    --accent-blue: #58a6ff;
+    --accent-cyan: #39d353;
+    --accent-error: #ff7b72;
+    --accent-purple: #bc8cff;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    padding: 20px 20px;
+    min-height: 100vh;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(88, 166, 255, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(188, 140, 255, 0.08) 0px, transparent 50%);
+  }
+
+  header {
+    max-width: 1200px;
+    margin: 20px auto 40px auto;
+    text-align: center;
+  }
+
+  .logo-area {
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    font-size: 2.2rem;
+    animation: pulse 3s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 15px rgba(88, 166, 255, 0.4)); }
+  }
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 10px auto 25px auto;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* Global Navigation Tabs (Original cheatsheets vs Sandbox Tools) */
+  .global-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(22, 27, 34, 0.6);
+    border: 1px solid var(--border-color);
+    padding: 6px;
+    border-radius: 40px;
+    max-width: 750px;
+    margin: 0 auto 40px auto;
+    backdrop-filter: blur(15px);
+  }
+
+  .global-tab {
+    padding: 10px 24px;
+    border-radius: 30px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .global-tab:hover {
+    color: var(--text-main);
+  }
+
+  .global-tab.active {
+    background: #21262d;
+    color: var(--text-main);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  /* Main Workspace containers */
+  .workspace-panel {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .workspace-panel.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Portal Sub-Header search and filter elements */
+  .search-container {
+    max-width: 650px;
+    margin: 0 auto 30px auto;
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    background: rgba(13, 17, 23, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+  }
+
+  /* Filters */
+  .filter-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    background: rgba(22, 27, 34, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .tab.active, .tab:hover {
+    color: var(--text-main);
+    border-color: var(--accent-blue);
+    background: #21262d;
+  }
+
+  /* Grid details */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+  }
+
+  /* Glowing accents based on tool colors */
+  .card.docker::before { background: #2496ed; }
+  .card.k8s::before { background: #326ce5; }
+  .card.terraform::before { background: #7c3aed; }
+  .card.git::before { background: #f05032; }
+  .card.actions::before { background: #238636; }
+  .card.jenkins::before { background: #d33833; }
+  .card.linux::before { background: #e95420; }
+  .card.prom-grafana::before { background: #e6522c; }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-color: #30363d;
+  }
+
+  .card-icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
+  .card h3 { font-family: 'Outfit', sans-serif; font-size: 1.3rem; margin-bottom: 8px; }
+  .card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.4; margin-bottom: 16px; }
+  
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(33, 38, 45, 0.4);
+    padding-top: 14px;
+  }
+  .cmd-count { font-size: 0.78rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .action-btn { font-size: 0.8rem; font-weight: 600; color: var(--accent-blue); }
+
+  /* -------------------------------------------------------------
+     2. WORKSPACE: INTERACTIVE BUILDER & MOCK TERMINAL PLAYGROUND
+     ------------------------------------------------------------- */
+  .builder-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+  }
+
+  .builder-control-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .builder-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 18px;
+    color: var(--accent-blue);
+  }
+
+  .builder-group {
+    margin-bottom: 16px;
+  }
+
+  .builder-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .builder-select, .builder-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: #080b10;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-main);
+    outline: none;
+    font-size: 0.9rem;
+  }
+
+  .builder-select:focus, .builder-input:focus {
+    border-color: var(--accent-blue);
+  }
+
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .checkbox-item input {
+    accent-color: var(--accent-blue);
+  }
+
+  .generated-cmd-box {
+    background: #080b10;
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #a5d6ff;
+    margin-top: 20px;
+    word-break: break-all;
+    position: relative;
+  }
+
+  .copy-inline-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--border-color);
+    border: none;
+    color: var(--text-main);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .copy-inline-btn:hover {
+    background: #30363d;
+  }
+
+  /* Mock Terminal */
+  .terminal-playground {
+    background: #02040a;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 480px;
+  }
+
+  .terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #161b22;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27c93f; }
+
+  .terminal-title {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .terminal-screen {
+    flex: 1;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #39d353;
+  }
+
+  .term-input-line {
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+
+  .term-output-line {
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .term-error-line {
+    color: var(--accent-error);
+    margin-bottom: 4px;
+  }
+
+  .term-success {
+    color: var(--accent-cyan);
+    font-weight: 600;
+  }
+
+  .run-term-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 6px;
+    color: #080b10;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .run-term-btn:hover {
+    background: #8ec3ff;
+  }
+
+  /* -------------------------------------------------------------
+     3. WORKSPACE: CONFIG BOILERPLATE GENERATOR
+     ------------------------------------------------------------- */
+  .boilerplate-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+  }
+
+  .bp-options-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .bp-list-item {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  .bp-list-item:hover {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .bp-list-item.active {
+    background: rgba(88,166,255,0.08);
+    border-color: var(--accent-blue);
+  }
+
+  .bp-list-item h4 {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .bp-list-item p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .bp-view-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .bp-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .bp-code-output {
+    background: #080b10;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #a5d6ff;
+    overflow-x: auto;
+    white-space: pre;
+    flex: 1;
+    margin-bottom: 16px;
+    max-height: 400px;
+  }
+
+  /* -------------------------------------------------------------
+     4. WORKSPACE: DEVOPS SYNTAX VALIDATOR (YAML / JSON)
+     ------------------------------------------------------------- */
+  .validator-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .val-editor-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .val-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .val-textarea {
+    width: 100%;
+    height: 300px;
+    background: #080b10;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 14px;
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    resize: vertical;
+  }
+
+  .val-textarea:focus {
+    border-color: var(--accent-blue);
+  }
+
+  .val-status-box {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .val-status-box.success {
+    background: rgba(57,211,83,0.1);
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+
+  .val-status-box.error {
+    background: rgba(255,123,114,0.1);
+    border: 1px solid var(--accent-error);
+    color: var(--accent-error);
+  }
+
+  .val-status-box.info {
+    background: rgba(88,166,255,0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+  }
+
+  /* Quick search results overlay */
+  .quick-search-results {
+    max-width: 650px;
+    margin: -30px auto 40px auto;
+    background: rgba(22, 27, 34, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 10;
+    position: relative;
+    backdrop-filter: blur(15px);
+  }
+
+  .search-result-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(240, 246, 252, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
+  }
+
+  .search-result-item:hover {
+    background: rgba(88, 166, 255, 0.1);
+  }
+
+  .result-cmd {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-blue);
+    font-size: 0.9rem;
+    word-break: break-all;
+    max-width: 60%;
+  }
+
+  .result-desc {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: right;
+  }
+
+  .result-tool {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    color: var(--text-main);
+    margin-left: 8px;
+  }
+
+  /* Fast copy Snippets */
+  .popular-snippet-bar {
+    background: rgba(22, 27, 34, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 40px;
+  }
+
+  .popular-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .snippet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .snippet-box {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .snippet-box:hover {
+    border-color: var(--accent-blue);
+    background: rgba(88, 166, 255, 0.05);
+  }
+
+  .snippet-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #a5d6ff;
+  }
+
+  .snippet-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* Footer */
+  footer {
+    max-width: 1200px;
+    margin: 80px auto 20px auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+  }
+</style>
+<!-- js-yaml library from Cloudflare CDN cached for offline validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <span class="logo-icon">⚡</span>
+      <h1>DevOps Commands Hub &amp; Workbench</h1>
+    </div>
+    <p class="subtitle">A full-featured developer workflow studio. Switch tabs below to access interactive builders, template generators, live validators, and cheatsheet search portals.</p>
+    
+    <!-- Top Level Navigation -->
+    <div class="global-nav">
+      <button class="global-tab active" onclick="switchPanel('portal', this)">🗂️ Cheatsheet Hub</button>
+      <button class="global-tab" onclick="switchPanel('builder', this)">⚙️ Command Builder</button>
+      <button class="global-tab" onclick="switchPanel('templates', this)">📄 Config Boilerplates</button>
+      <button class="global-tab" onclick="switchPanel('validator', this)">🔍 Syntax Validator</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================
+         PANEL 1: CHEATSHEETS PORTAL PORTLET
+         ========================================== -->
+    <div class="workspace-panel active" id="panel-portal">
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchField" class="search-input" placeholder="Search across all cheatsheets (e.g. build, rollback, port)...">
+      </div>
+
+      <!-- Live Search Overlay -->
+      <div class="quick-search-results" id="searchResults"></div>
+
+      <div class="filter-tabs">
+        <div class="tab active" onclick="filterCategory('all', this)">All Tools</div>
+        <div class="tab" onclick="filterCategory('container', this)">Containers &amp; Orchestration</div>
+        <div class="tab" onclick="filterCategory('iac', this)">Infrastructure as Code</div>
+        <div class="tab" onclick="filterCategory('cicd', this)">CI / CD</div>
+        <div class="tab" onclick="filterCategory('os', this)">Core OS</div>
+        <div class="tab" onclick="filterCategory('monitoring', this)">Monitoring</div>
+      </div>
+
+      <div class="grid-container" id="toolsGrid">
+        <!-- Docker -->
+        <a href="./docker.html" class="card docker" data-cat="container">
+          <span class="card-icon">🐳</span>
+          <h3>Docker</h3>
+          <p>Complete guide covering container creation, custom builds, volume mapping, logs rotation, swarm systems, and run resource caps.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">100+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Kubernetes -->
+        <a href="./kubernetes.html" class="card k8s" data-cat="container">
+          <span class="card-icon">☸️</span>
+          <h3>Kubernetes</h3>
+          <p>Robust cluster configuration references. Covers namespace tasks, deployments rollback, daemonset limits, custom JSONPaths, and Helm charts.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">120+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Terraform -->
+        <a href="./terraform.html" class="card terraform" data-cat="iac">
+          <span class="card-icon">🏗️</span>
+          <h3>Terraform</h3>
+          <p>HCL resource definitions, workspaces separation, direct state manipulations, lock releases, S3/Azure backends, and modular standards.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">80+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Git -->
+        <a href="./git.html" class="card git" data-cat="os">
+          <span class="card-icon">🔀</span>
+          <h3>Git</h3>
+          <p>From primary config setup, branch merges, interactive rebases, stash profiles, up to advanced worktrees, object reflogs, and diagnostics.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">150+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- GitHub Actions -->
+        <a href="./github-actions.html" class="card actions" data-cat="cicd">
+          <span class="card-icon">⚡</span>
+          <h3>GitHub Actions</h3>
+          <p>Workflow syntax definitions, step outputs, OIDC secure provider integrations, parallel matrices, runner configurations, and environment gates.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">90+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Jenkins -->
+        <a href="./jenkins.html" class="card jenkins" data-cat="cicd">
+          <span class="card-icon">🔧</span>
+          <h3>Jenkins</h3>
+          <p>Remote CLI actions, REST crumb generation, Groovy scripts, declarative and scripted pipelines, credentials masking, and config-as-code YAMLs.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">60+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Linux -->
+        <a href="./linux.html" class="card linux" data-cat="os">
+          <span class="card-icon">🐧</span>
+          <h3>Linux</h3>
+          <p>Essential utilities, filesystem permissions, process management, custom storage mounts, dig/tcpdump network checkers, and Bash scripting standards.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">200+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+
+        <!-- Prometheus & Grafana -->
+        <a href="./prometheus-grafana.html" class="card prom-grafana" data-cat="monitoring">
+          <span class="card-icon">🔥</span>
+          <h3>Prometheus &amp; Grafana</h3>
+          <p>TSDB settings, scraping definitions, custom PromQL rate/histogram equations, Alertmanager triggers, Loki LogQL, and Tempo service graphs.</p>
+          <div class="card-bottom">
+            <span class="cmd-count">70+ commands</span>
+            <span class="action-btn">Open Cheatsheet →</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Copy panel -->
+      <div class="popular-snippet-bar">
+        <div class="popular-title">
+          <span>⭐</span> Fast Copy Favourites
+        </div>
+        <div class="snippet-grid">
+          <div class="snippet-box" onclick="copySnippet('docker system prune -a --volumes')">
+            <div>
+              <div class="snippet-code">docker system prune -a --volumes</div>
+              <div class="snippet-desc">Deep-clean all unused Docker artifacts</div>
+            </div>
+            <span>📋</span>
+          </div>
+          <div class="snippet-box" onclick="copySnippet('kubectl get pods -A -o wide')">
+            <div>
+              <div class="snippet-code">kubectl get pods -A -o wide</div>
+              <div class="snippet-desc">List all pods across namespace + node IP</div>
+            </div>
+            <span>📋</span>
+          </div>
+          <div class="snippet-box" onclick="copySnippet('git commit --amend --no-edit')">
+            <div>
+              <div class="snippet-code">git commit --amend --no-edit</div>
+              <div class="snippet-desc">Quietly amend files into the last commit</div>
+            </div>
+            <span>📋</span>
+          </div>
+          <div class="snippet-box" onclick="copySnippet('ss -tulpn')">
+            <div>
+              <div class="snippet-code">ss -tulpn</div>
+              <div class="snippet-desc">List all active listening sockets and PIDs</div>
+            </div>
+            <span>📋</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PANEL 2: INTERACTIVE COMMAND BUILDER
+         ========================================== -->
+    <div class="workspace-panel" id="panel-builder">
+      <div class="builder-layout">
+        
+        <div class="builder-control-panel">
+          <div class="builder-title">Interactive CLI Constructor</div>
+          
+          <div class="builder-group">
+            <label for="builder-tool-select">Target Action</label>
+            <select id="builder-tool-select" class="builder-select" onchange="updateBuilderFields()">
+              <option value="docker">Docker Run Container</option>
+              <option value="kubectl">Kubectl Create Deployment</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Options Section -->
+          <div id="dynamic-builder-fields">
+            <!-- Populated via JS -->
+          </div>
+
+          <div class="generated-cmd-box">
+            <span id="generated-command-text">docker run -d nginx</span>
+            <button class="copy-inline-btn" onclick="copySnippet(document.getElementById('generated-command-text').innerText)">Copy</button>
+          </div>
+
+          <button class="run-term-btn" onclick="executeMockTerminal()">⚡ Run Command Sandbox</button>
+        </div>
+
+        <!-- Terminal Playground -->
+        <div class="terminal-playground">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="terminal-title">DevOps Virtual Playground Terminal</span>
+            <span style="font-size: 0.7rem; color: #a5d6ff;">bash</span>
+          </div>
+          <div class="terminal-screen" id="terminalScreen">
+            <div class="term-input-line">$ Welcome to DevOps terminal playground. Select options on the left and run!</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PANEL 3: CONFIG BOILERPLATES
+         ========================================== -->
+    <div class="workspace-panel" id="panel-templates">
+      <div class="boilerplate-layout">
+        <div class="bp-options-panel">
+          <div class="builder-title">Boilerplate Catalog</div>
+          <div class="bp-list-item active" onclick="loadTemplate('compose', this)">
+            <h4>🐳 Docker Compose</h4>
+            <p>Multi-service database + web stack setup</p>
+          </div>
+          <div class="bp-list-item" onclick="loadTemplate('k8s-pod', this)">
+            <h4>☸️ Kubernetes Pod</h4>
+            <p>Simple pod with Configmap/Secret specs</p>
+          </div>
+          <div class="bp-list-item" onclick="loadTemplate('gh-actions', this)">
+            <h4>⚡ GitHub Actions</h4>
+            <p>Standard Node.js CI test/build pipeline</p>
+          </div>
+        </div>
+
+        <div class="bp-view-panel">
+          <div class="bp-editor-header">
+            <span style="font-weight: 600;" id="bp-active-title">Docker Compose Configuration</span>
+            <button class="tab active" style="border-radius: 6px;" onclick="copySnippet(document.getElementById('bp-editor-screen').innerText)">📋 Copy YAML Config</button>
+          </div>
+          <pre class="bp-code-output" id="bp-editor-screen">Loading...</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PANEL 4: DEVOPS SYNTAX VALIDATOR (YAML / JSON)
+         ========================================== -->
+    <div class="workspace-panel" id="panel-validator">
+      <div class="validator-layout">
+        <div class="val-editor-container">
+          <div class="val-header">
+            <span class="builder-title" style="margin-bottom:0;">JSON &amp; YAML Lint Validator</span>
+            <div style="display:flex; gap: 8px;">
+              <button class="tab active" id="btn-detect" onclick="validateInput()">Auto-Validate</button>
+              <button class="tab" onclick="clearValidator()">Clear</button>
+            </div>
+          </div>
+          <textarea class="val-textarea" id="validatorTextarea" placeholder="Paste your YAML config or JSON data block here..." oninput="validateInput()"></textarea>
+          <div class="val-status-box info" id="validatorStatus">
+            Paste code above to execute the live parsing rules.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 DevOps Commands Hub. Built to maximize developer speed and eliminate search fatigue.</p>
+    <p style="margin-top:8px; font-size: 0.75rem; color: var(--accent-blue);">
+      <a href="https://github.com" target="_blank" style="text-decoration:none; color:inherit;">✏️ Suggest a command or contribute on GitHub</a>
+    </p>
+  </footer>
+
+  <script>
+    // Tab switching
+    function switchPanel(panelId, btnEl) {
+      document.querySelectorAll('.global-tab').forEach(t => t.classList.remove('active'));
+      btnEl.classList.add('active');
+
+      document.querySelectorAll('.workspace-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + panelId).classList.add('active');
+
+      // Initialize workspace elements
+      if (panelId === 'builder') {
+        updateBuilderFields();
+      } else if (panelId === 'templates') {
+        loadTemplate('compose', document.querySelector('.bp-list-item'));
+      }
+    }
+
+    // Portal Category filters
+    function filterCategory(cat, tabEl) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tabEl.classList.add('active');
+
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'flex';
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+        } else {
+          card.style.display = 'none';
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.95)';
+        }
+      });
+    }
+
+    // Copy action
+    function copySnippet(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+
+    // Interactive command builders DB
+    function updateBuilderFields() {
+      const tool = document.getElementById('builder-tool-select').value;
+      const fieldsDiv = document.getElementById('dynamic-builder-fields');
+      
+      if (tool === 'docker') {
+        fieldsDiv.innerHTML = `
+          <div class="builder-group">
+            <label for="docker-image">Docker Image Name</label>
+            <input type="text" id="docker-image" class="builder-input" value="nginx:alpine" oninput="generateCommandText()">
+          </div>
+          <div class="builder-group">
+            <label for="docker-port">Port Mapping (Host:Container)</label>
+            <input type="text" id="docker-port" class="builder-input" value="8080:80" oninput="generateCommandText()">
+          </div>
+          <div class="builder-group">
+            <label for="docker-name">Container Instance Name</label>
+            <input type="text" id="docker-name" class="builder-input" value="my-web-app" oninput="generateCommandText()">
+          </div>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" id="docker-d" checked onchange="generateCommandText()"> Detached (-d)</label>
+            <label class="checkbox-item"><input type="checkbox" id="docker-rm" checked onchange="generateCommandText()"> Auto-Remove (--rm)</label>
+          </div>
+        `;
+      } else {
+        fieldsDiv.innerHTML = `
+          <div class="builder-group">
+            <label for="k8s-deploy">Deployment Name</label>
+            <input type="text" id="k8s-deploy" class="builder-input" value="nginx-deployment" oninput="generateCommandText()">
+          </div>
+          <div class="builder-group">
+            <label for="k8s-image">Image Name</label>
+            <input type="text" id="k8s-image" class="builder-input" value="nginx:latest" oninput="generateCommandText()">
+          </div>
+          <div class="builder-group">
+            <label for="k8s-replicas">Replicas count</label>
+            <input type="number" id="k8s-replicas" class="builder-input" value="3" oninput="generateCommandText()">
+          </div>
+          <div class="builder-group">
+            <label for="k8s-port">Container Target Port</label>
+            <input type="text" id="k8s-port" class="builder-input" value="80" oninput="generateCommandText()">
+          </div>
+        `;
+      }
+      generateCommandText();
+    }
+
+    function generateCommandText() {
+      const tool = document.getElementById('builder-tool-select').value;
+      const cmdText = document.getElementById('generated-command-text');
+      
+      if (tool === 'docker') {
+        const image = document.getElementById('docker-image').value || 'image';
+        const port = document.getElementById('docker-port').value;
+        const name = document.getElementById('docker-name').value;
+        const isDetached = document.getElementById('docker-d').checked;
+        const isRm = document.getElementById('docker-rm').checked;
+        
+        let cmd = 'docker run';
+        if (isDetached) cmd += ' -d';
+        if (isRm) cmd += ' --rm';
+        if (port) cmd += ` -p ${port}`;
+        if (name) cmd += ` --name ${name}`;
+        cmd += ` ${image}`;
+        cmdText.innerText = cmd;
+      } else {
+        const name = document.getElementById('k8s-deploy').value || 'my-deploy';
+        const image = document.getElementById('k8s-image').value || 'nginx';
+        const replicas = document.getElementById('k8s-replicas').value || '1';
+        const port = document.getElementById('k8s-port').value;
+        
+        let cmd = `kubectl create deployment ${name} --image=${image} --replicas=${replicas}`;
+        if (port) cmd += ` --port=${port}`;
+        cmdText.innerText = cmd;
+      }
+    }
+
+    // Mock terminal logs
+    function executeMockTerminal() {
+      const tool = document.getElementById('builder-tool-select').value;
+      const command = document.getElementById('generated-command-text').innerText;
+      const screen = document.getElementById('terminalScreen');
+      
+      screen.innerHTML = `<div class="term-input-line">$ ${command}</div>`;
+      
+      if (tool === 'docker') {
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">Unable to find image locally... pulling image layers</div>`; }, 400);
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">ef076412: Pull complete [5.4 MB / 5.4 MB]</div>`; }, 1000);
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">Digest: sha256:4a0280efea54817a0279d01249bcf82e</div>`; }, 1500);
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">Status: Downloaded newer image for ${document.getElementById('docker-image').value}</div>`; }, 1800);
+        setTimeout(() => { 
+          screen.innerHTML += `
+            <div class="term-output-line">Container spawned successfully!</div>
+            <div class="term-success">ID: a206b1297db0e2a8c3d9a10cb598e100f7247738202da017ffc0c</div>
+            <div class="term-success">⚡ Sandbox Execution SUCCESS. Container listening on local ports!</div>
+          `; 
+          screen.scrollTop = screen.scrollHeight;
+        }, 2200);
+      } else {
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">Connecting to kubernetes api server cluster...</div>`; }, 400);
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">deployment.apps/${document.getElementById('k8s-deploy').value} created successfully.</div>`; }, 1000);
+        setTimeout(() => { screen.innerHTML += `<div class="term-output-line">Scaling replicas and scheduling deployment pods...</div>`; }, 1500);
+        setTimeout(() => { 
+          screen.innerHTML += `
+            <div class="term-output-line">Pod 1: Scheduled -> ContainerCreating</div>
+            <div class="term-output-line">Pod 2: Scheduled -> ContainerCreating</div>
+            <div class="term-output-line">Pod 3: Scheduled -> Running</div>
+            <div class="term-success">⚡ Kubernetes deployment sandbox success! Run "kubectl get deployments" to verify status.</div>
+          `; 
+          screen.scrollTop = screen.scrollHeight;
+        }, 2200);
+      }
+    }
+
+    // Config Templates
+    const templates = {
+      compose: `version: '3.8'
+
+services:
+  web:
+    image: node:20-alpine
+    container_name: web_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: db_postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secretpass
+      - POSTGRES_DB=app_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:`,
+      'k8s-pod': `apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-service-pod
+  labels:
+    app: backend
+    env: production
+spec:
+  containers:
+  - name: server
+    image: nginx:1.25-alpine
+    ports:
+    - containerPort: 80
+    env:
+    - name: API_SECRET_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: app-secrets
+          key: token
+    volumeMounts:
+    - name: data-storage
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: data-storage
+    persistentVolumeClaim:
+      claimName: static-pvc`,
+      'gh-actions': `name: Node.js Continuous Integration
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js \${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: \${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint checks
+      run: npm run lint
+
+    - name: Execute automated tests
+      run: npm test`
+    };
+
+    function loadTemplate(type, el) {
+      document.querySelectorAll('.bp-list-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+      
+      const screen = document.getElementById('bp-editor-screen');
+      const title = document.getElementById('bp-active-title');
+      
+      if (type === 'compose') {
+        title.innerText = 'Docker Compose YAML template';
+      } else if (type === 'k8s-pod') {
+        title.innerText = 'Kubernetes YAML simple Pod template';
+      } else {
+        title.innerText = 'GitHub Actions Workflows CI YAML template';
+      }
+      
+      screen.innerText = templates[type];
+    }
+
+    // YAML & JSON Lint Validator
+    function validateInput() {
+      const input = document.getElementById('validatorTextarea').value.trim();
+      const statusBox = document.getElementById('validatorStatus');
+
+      if (!input) {
+        statusBox.className = 'val-status-box info';
+        statusBox.innerText = 'Paste code above to execute the live parsing rules.';
+        return;
+      }
+
+      // 1. Try JSON parsing
+      if (input.startsWith('{') || input.startsWith('[')) {
+        try {
+          JSON.parse(input);
+          statusBox.className = 'val-status-box success';
+          statusBox.innerText = '✅ Valid JSON! Syntax validation passed successfully.';
+        } catch (err) {
+          statusBox.className = 'val-status-box error';
+          statusBox.innerText = '❌ Invalid JSON: ' + err.message;
+        }
+        return;
+      }
+
+      // 2. Try YAML parsing (using js-yaml if loaded, or fallback regex/spacing rules)
+      if (typeof jsyaml !== 'undefined') {
+        try {
+          jsyaml.load(input);
+          statusBox.className = 'val-status-box success';
+          statusBox.innerText = '✅ Valid YAML! Structure and nesting indentation validated successfully.';
+        } catch (err) {
+          statusBox.className = 'val-status-box error';
+          statusBox.innerText = `❌ Invalid YAML: ${err.reason} (Line ${err.mark ? err.mark.line + 1 : 'unknown'})`;
+        }
+      } else {
+        // Fallback simple line checking
+        const lines = input.split('\n');
+        let errorMsg = null;
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          if (line.includes('\t')) {
+            errorMsg = `Line ${i + 1}: Found tab characters. YAML mandates spaces for indentation.`;
+            break;
+          }
+        }
+        if (errorMsg) {
+          statusBox.className = 'val-status-box error';
+          statusBox.innerText = '❌ ' + errorMsg;
+        } else {
+          statusBox.className = 'val-status-box success';
+          statusBox.innerText = '✅ Basic lint checks passed (Tab-free spaces checked). Online/cached YAML engine ready.';
+        }
+      }
+    }
+
+    function clearValidator() {
+      document.getElementById('validatorTextarea').value = '';
+      validateInput();
+    }
+
+    // Global Search mechanism
+    const searchDB = [
+      { cmd: "docker build -t img:tag .", desc: "Build standard Docker image", tool: "Docker" },
+      { cmd: "docker system prune -a --volumes", desc: "Clean all unused containers, images & volumes", tool: "Docker" },
+      { cmd: "docker exec -it ctr bash", desc: "Interactive Shell access into container", tool: "Docker" },
+      { cmd: "kubectl get pods -A", desc: "Show pods across all namespaces", tool: "Kubernetes" },
+      { cmd: "kubectl logs -f podname", desc: "Follow live container logs", tool: "Kubernetes" },
+      { cmd: "kubectl port-forward svc/name 8080:80", desc: "Forward service port to localhost", tool: "Kubernetes" },
+      { cmd: "terraform init -upgrade", desc: "Initialize backend and upgrade providers", tool: "Terraform" },
+      { cmd: "terraform state mv src dst", desc: "Move resources inside state manually", tool: "Terraform" },
+      { cmd: "git rebase -i HEAD~5", desc: "Interactive rebase of last 5 commits", tool: "Git" },
+      { cmd: "git commit --amend --no-edit", desc: "Add changes to previous commit silently", tool: "Git" },
+      { cmd: "git reflog", desc: "Show historical pointer operations trace", tool: "Git" },
+      { cmd: "ss -tulpn", desc: "List all active TCP/UDP ports with process IDs", tool: "Linux" },
+      { cmd: "find . -type f -size +100M", desc: "Find files larger than 100MB", tool: "Linux" },
+      { cmd: "rate(http_requests_total[5m])", desc: "Calculate PromQL HTTP request rate", tool: "Prometheus" }
+    ];
+
+    const searchField = document.getElementById('searchField');
+    const searchResults = document.getElementById('searchResults');
+
+    searchField.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      const matches = searchDB.filter(item => 
+        item.cmd.toLowerCase().includes(query) || 
+        item.desc.toLowerCase().includes(query) ||
+        item.tool.toLowerCase().includes(query)
+      );
+
+      if (matches.length > 0) {
+        searchResults.innerHTML = matches.map(item => `
+          <div class="search-result-item" onclick="copySnippet('${item.cmd}')">
+            <span class="result-cmd">${item.cmd}</span>
+            <span class="result-desc">
+              ${item.desc}
+              <span class="result-tool">${item.tool}</span>
+            </span>
+          </div>
+        `).join('');
+        searchResults.style.display = 'block';
+      } else {
+        searchResults.innerHTML = `<div style="text-align:center; padding: 12px; color: var(--text-muted);">No exact quick-commands found. Click into the tools below!</div>`;
+        searchResults.style.display = 'block';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!searchField.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service worker registered successfully!'))
+          .catch(err => console.log('Service worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

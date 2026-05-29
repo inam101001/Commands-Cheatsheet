@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenkins Command Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0d1117;color:#c9d1d9;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;padding:24px;}
+  h1{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;text-align:center;color:#f0f6fc;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;text-shadow:0 0 30px #d3383388;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .section{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:14px;}
+  .section h2{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#58a6ff;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #21262d;}
+  .cmd{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid #21262d33;}
+  .cmd:last-child{border-bottom:none;}
+  .c{color:#a5d6ff;flex:0 0 auto;max-width:65%;word-break:break-all;}
+  .d{color:#7d8590;font-family:'Inter',sans-serif;font-size:10.5px;margin-left:8px;text-align:right;flex:1;}
+  pre.code{font-family:'JetBrains Mono',monospace;background:#0d1117;color:#a5d6ff;font-size:9.5px;padding:8px;border-radius:4px;overflow-x:auto;white-space:pre;margin:6px 0;border:1px solid #30363d;}
+
+  
+
+  
+
+
+  /* Quick Nav Styles */
+  .nav-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: rgba(22, 27, 34, 0.95) !important;
+    border: 1px solid #21262d !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    margin-bottom: 30px !important;
+    backdrop-filter: blur(10px) !important;
+    font-family: 'Inter', sans-serif !important;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: relative !important;
+    z-index: 9999 !important;
+  }
+  .home-link {
+    color: #58a6ff !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  .home-link:hover {
+    color: #a5d6ff !important;
+  }
+  .nav-label {
+    color: #8b949e !important;
+    font-size: 11px !important;
+    margin-right: 8px !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  .nav-select {
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-family: 'Inter', sans-serif !important;
+    outline: none !important;
+    cursor: pointer !important;
+  }
+  .nav-select:focus {
+    border-color: #58a6ff !important;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="nav-header">
+  <div class="nav-left">
+    <a href="./index.html" class="home-link">⚡ DevOps Commands Hub</a>
+  </div>
+  <div class="nav-right">
+    <span class="nav-label">Quick Switch:</span>
+    <select class="nav-select" onchange="location = this.value;">
+      <option value="" disabled selected>Select tool...</option>
+      <option value="./index.html">🏠 Home Dashboard</option>
+      <option value="./docker.html">🐳 Docker Reference</option>
+      <option value="./kubernetes.html">☸️ Kubernetes Reference</option>
+      <option value="./terraform.html">🏗️ Terraform Reference</option>
+      <option value="./git.html">🔀 Git Reference</option>
+      <option value="./github-actions.html">⚡ GitHub Actions Reference</option>
+      <option value="./jenkins.html">🔧 Jenkins Reference</option>
+      <option value="./linux.html">🐧 Linux Reference</option>
+      <option value="./prometheus-grafana.html">🔥 Prometheus &amp; Grafana</option>
+    </select>
+  </div>
+</div>
+
+
+
+
+
+
+  
+<h1>🔧 Jenkins Command Reference</h1>
+<div class="grid">
+
+<div class="section"><h2>Jenkins CLI Basics</h2>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s http://localhost:8080/ help</span><span class="d">List all commands</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL -auth user:pass CMD</span><span class="d">Auth with credentials</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL -i /path/key CMD</span><span class="d">Auth with SSH Key</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL who-am-i</span><span class="d">Verify authentication</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL version</span><span class="d">Show server version</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL safe-restart</span><span class="d">Restart after builds finish</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL restart</span><span class="d">Force immediate restart</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL shutdown</span><span class="d">Shut down Jenkins server</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL quiet-down</span><span class="d">Enter quiet mode (no new builds)</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL cancel-quiet-down</span><span class="d">Cancel quiet mode</span></div>
+</div>
+
+<div class="section"><h2>CLI Job &amp; Build Management</h2>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL list-jobs</span><span class="d">List all configured jobs</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL build JobName -p K=V</span><span class="d">Build job with parameters</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL build JobName -s -v</span><span class="d">Build, wait, stream logs</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL get-job JobName > job.xml</span><span class="d">Export job configuration XML</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL create-job NewJob < job.xml</span><span class="d">Create job from XML</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL update-job JobName < new.xml</span><span class="d">Update job configuration XML</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL copy-job SrcJob NewJob</span><span class="d">Copy an existing job</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL delete-job JobName</span><span class="d">Delete a job configuration</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL enable-job JobName</span><span class="d">Enable a disabled job</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL disable-job JobName</span><span class="d">Disable a job</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL console JobName 10</span><span class="d">Print console log for build 10</span></div>
+</div>
+
+<div class="section"><h2>CLI Plugin &amp; Node Operations</h2>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL list-plugins</span><span class="d">List installed plugins</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL install-plugin git-plugin</span><span class="d">Install plugin by ID</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL install-plugin /path/file.hpi</span><span class="d">Install plugin from file</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL reload-configuration</span><span class="d">Reload configuration from disk</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL create-node < node.xml</span><span class="d">Create build agent node</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL delete-node AgentName</span><span class="d">Delete build agent node</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL connect-node AgentName</span><span class="d">Reconnect build agent</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL disconnect-node AgentName</span><span class="d">Disconnect build agent</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL offline-node Agent -m "msg"</span><span class="d">Set agent offline with message</span></div>
+<div class="cmd"><span class="c">java -jar jenkins-cli.jar -s URL online-node AgentName</span><span class="d">Set agent online</span></div>
+</div>
+
+<div class="section"><h2>Jenkins REST API Examples</h2>
+<div class="cmd"><span class="c">curl -u user:token URL/crumbIssuer/api/xml</span><span class="d">Get CSRF protection crumb</span></div>
+<div class="cmd"><span class="c">curl -X POST -u u:t URL/job/J/build</span><span class="d">Trigger standard build</span></div>
+<div class="cmd"><span class="c">curl -X POST -u u:t URL/job/J/buildWithParameters?K=V</span><span class="d">Trigger parameterized build</span></div>
+<div class="cmd"><span class="c">curl -u u:t URL/job/J/api/json?pretty=true</span><span class="d">Get job details in JSON</span></div>
+<div class="cmd"><span class="c">curl -u u:t URL/job/J/12/api/json</span><span class="d">Get build 12 details</span></div>
+<div class="cmd"><span class="c">curl -u u:t URL/job/J/12/consoleText</span><span class="d">Get plain text build logs</span></div>
+<div class="cmd"><span class="c">curl -X POST -u u:t URL/job/J/12/stop</span><span class="d">Abort running build 12</span></div>
+<div class="cmd"><span class="c">curl -X POST -u u:t URL/job/J/config.xml</span><span class="d">Fetch config XML</span></div>
+<div class="cmd"><span class="c">curl -u u:t URL/queue/api/json</span><span class="d">View the build queue status</span></div>
+<div class="cmd"><span class="c">curl -X POST -u u:t URL/pluginManager/installNecessaryPlugins</span><span class="d">Batch install plugins</span></div>
+</div>
+
+<div class="section"><h2>Groovy Script Console Snippets</h2>
+<pre class="code">// List all installed plugins
+Jenkins.instance.pluginManager.plugins.each {
+  println "${it.shortName}: ${it.version}"
+}</pre>
+<pre class="code">// Cancel all items in the build queue
+Jenkins.instance.queue.clear()</pre>
+<pre class="code">// Safely clean up workspace of all projects
+for (item in Jenkins.instance.getAllItems(AbstractProject)) {
+  item.doWipeOutWorkspace()
+}</pre>
+<pre class="code">// Enable/Disable all jobs
+Jenkins.instance.getAllItems(Job).each { job ->
+  job.disabled = true
+  job.save()
+}</pre>
+</div>
+
+<div class="section"><h2>Declarative Pipeline Basics</h2>
+<pre class="code">pipeline {
+    agent any
+    environment {
+        APP_ENV = 'production'
+    }
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        ansiColor('xterm')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}</pre>
+</div>
+
+<div class="section"><h2>Scripted Pipeline &amp; Steps</h2>
+<pre class="code">node('linux-agent') {
+    try {
+        stage('Checkout') {
+            checkout scm
+        }
+        stage('Build') {
+            sh './gradlew build'
+        }
+    } catch(err) {
+        currentBuild.result = 'FAILURE'
+        throw err
+    } finally {
+        echo "Cleaned up."
+    }
+}</pre>
+</div>
+
+<div class="section"><h2>Common Pipeline Steps</h2>
+<div class="cmd"><span class="c">sh './script.sh'</span><span class="d">Execute Shell (Linux/Unix)</span></div>
+<div class="cmd"><span class="c">bat 'run.bat'</span><span class="d">Execute Batch (Windows)</span></div>
+<div class="cmd"><span class="c">powershell 'Write-Host "Hi"'</span><span class="d">Execute PowerShell script</span></div>
+<div class="cmd"><span class="c">git url: 'https://...', branch: 'main'</span><span class="d">Clone Git repository</span></div>
+<div class="cmd"><span class="c">archiveArtifacts artifacts: '**/tar.gz'</span><span class="d">Archive build artifacts</span></div>
+<div class="cmd"><span class="c">junit '**/build/test-results/*.xml'</span><span class="d">Publish JUnit test results</span></div>
+<div class="cmd"><span class="c">publishHTML target: [allowMissing: false]</span><span class="d">Publish static HTML reports</span></div>
+<div class="cmd"><span class="c">stash name: 'src', include: '**/*.java'</span><span class="d">Save files for other stages</span></div>
+<div class="cmd"><span class="c">unstash 'src'</span><span class="d">Retrieve stashed files</span></div>
+<div class="cmd"><span class="c">input message: 'Promote to prod?'</span><span class="d">Prompt user for manual action</span></div>
+</div>
+
+<div class="section"><h2>Credentials Management</h2>
+<pre class="code">// Use Username/Password
+withCredentials([usernamePassword(
+    credentialsId: 'my-credentials-id',
+    usernameVariable: 'USER',
+    passwordVariable: 'PASS')]) {
+    sh 'curl -u $USER:$PASS http://api.com'
+}</pre>
+<pre class="code">// Use Secret Text
+withCredentials([string(
+    credentialsId: 'my-token-id',
+    variable: 'API_TOKEN')]) {
+    sh 'curl -H "Auth: $API_TOKEN" URL'
+}</pre>
+</div>
+
+<div class="section"><h2>Docker in Pipelines</h2>
+<pre class="code">// Run inside a Docker container
+agent {
+    docker { image 'node:20-alpine' }
+}
+
+// Inline Docker usage (Scripted)
+docker.image('maven:3-openjdk-17').inside {
+    sh 'mvn clean install'
+}</pre>
+<pre class="code">// Build &amp; Push Docker Image
+docker.withRegistry('https://ghcr.io', 'registry-creds') {
+    def img = docker.build("my-app:${env.BUILD_NUMBER}")
+    img.push()
+}</pre>
+</div>
+
+<div class="section"><h2>Build Triggers &amp; Parameters</h2>
+<pre class="code">// Triggers block
+triggers {
+    cron('H 4 * * 1-5') // Mon-Fri 4 AM
+    pollSCM('H/15 * * * *') // Poll SCM
+    upstream(upstreamProjects: 'BuildAll', threshold: hudson.model.Result.SUCCESS)
+}</pre>
+<pre class="code">// Parameters block
+parameters {
+    string(name: 'DEPLOY_ENV', defaultValue: 'dev', description: 'Target env')
+    booleanParam(name: 'RUN_TESTS', defaultValue: true)
+    choice(name: 'BROWSER', choices: ['Chrome', 'Firefox', 'Safari'])
+}</pre>
+</div>
+
+<div class="section"><h2>Troubleshooting &amp; Maintenance</h2>
+<div class="cmd"><span class="c">java -XX:+UnlockDiagnosticVMOptions ...</span><span class="d">JVM diagnostic options</span></div>
+<div class="cmd"><span class="c">export JENKINS_HOME=/var/jenkins_home</span><span class="d">Define Jenkins home dir</span></div>
+<div class="cmd"><span class="c">Thread.getAllStackTraces().keySet()</span><span class="d">Get Groovy thread dumps</span></div>
+<div class="cmd"><span class="c">System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")</span><span class="d">Disable CSP (allow inline CSS)</span></div>
+<div class="cmd"><span class="c">ls $JENKINS_HOME/plugins</span><span class="d">View installed plugins directly</span></div>
+<div class="cmd"><span class="c">tail -f /var/log/jenkins/jenkins.log</span><span class="d">Monitor server master logs</span></div>
+<div class="cmd"><span class="c">/safeRestart</span><span class="d">Append to URL for safe restart</span></div>
+<div class="cmd"><span class="c">/reload</span><span class="d">Append to URL to reload config</span></div>
+</div>
+
+</div>
+</body>
+</html>

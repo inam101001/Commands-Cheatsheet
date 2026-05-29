@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Command Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0d1117;color:#c9d1d9;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;padding:24px;}
+  h1{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;text-align:center;color:#f0f6fc;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;text-shadow:0 0 30px #e9542088;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .section{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:14px;}
+  .section h2{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#58a6ff;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #21262d;}
+  .cmd{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid #21262d33;}
+  .cmd:last-child{border-bottom:none;}
+  .c{color:#a5d6ff;flex:0 0 auto;max-width:65%;word-break:break-all;}
+  .d{color:#7d8590;font-family:'Inter',sans-serif;font-size:10.5px;margin-left:8px;text-align:right;flex:1;}
+  pre.code{font-family:'JetBrains Mono',monospace;background:#0d1117;color:#a5d6ff;font-size:9.5px;padding:8px;border-radius:4px;overflow-x:auto;white-space:pre;margin:6px 0;border:1px solid #30363d;}
+
+  
+
+  
+
+
+  /* Quick Nav Styles */
+  .nav-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: rgba(22, 27, 34, 0.95) !important;
+    border: 1px solid #21262d !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    margin-bottom: 30px !important;
+    backdrop-filter: blur(10px) !important;
+    font-family: 'Inter', sans-serif !important;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: relative !important;
+    z-index: 9999 !important;
+  }
+  .home-link {
+    color: #58a6ff !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  .home-link:hover {
+    color: #a5d6ff !important;
+  }
+  .nav-label {
+    color: #8b949e !important;
+    font-size: 11px !important;
+    margin-right: 8px !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  .nav-select {
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-family: 'Inter', sans-serif !important;
+    outline: none !important;
+    cursor: pointer !important;
+  }
+  .nav-select:focus {
+    border-color: #58a6ff !important;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="nav-header">
+  <div class="nav-left">
+    <a href="./index.html" class="home-link">⚡ DevOps Commands Hub</a>
+  </div>
+  <div class="nav-right">
+    <span class="nav-label">Quick Switch:</span>
+    <select class="nav-select" onchange="location = this.value;">
+      <option value="" disabled selected>Select tool...</option>
+      <option value="./index.html">🏠 Home Dashboard</option>
+      <option value="./docker.html">🐳 Docker Reference</option>
+      <option value="./kubernetes.html">☸️ Kubernetes Reference</option>
+      <option value="./terraform.html">🏗️ Terraform Reference</option>
+      <option value="./git.html">🔀 Git Reference</option>
+      <option value="./github-actions.html">⚡ GitHub Actions Reference</option>
+      <option value="./jenkins.html">🔧 Jenkins Reference</option>
+      <option value="./linux.html">🐧 Linux Reference</option>
+      <option value="./prometheus-grafana.html">🔥 Prometheus &amp; Grafana</option>
+    </select>
+  </div>
+</div>
+
+
+
+
+
+
+  
+<h1>🐧 Linux Command Reference</h1>
+<div class="grid">
+
+<div class="section"><h2>File &amp; Directory Operations</h2>
+<div class="cmd"><span class="c">ls -lahR</span><span class="d">Recursive long list all files</span></div>
+<div class="cmd"><span class="c">mkdir -p /path/a/b</span><span class="d">Create nested directories</span></div>
+<div class="cmd"><span class="c">rm -rf /dir</span><span class="d">Force remove dir recursively</span></div>
+<div class="cmd"><span class="c">cp -rp src dst</span><span class="d">Copy preserving permissions</span></div>
+<div class="cmd"><span class="c">find . -name "*.log"</span><span class="d">Find files by pattern</span></div>
+<div class="cmd"><span class="c">find / -type f -size +100M</span><span class="d">Find files larger than 100MB</span></div>
+<div class="cmd"><span class="c">find . -mtime -7</span><span class="d">Modified in last 7 days</span></div>
+<div class="cmd"><span class="c">find . -exec chmod 644 {} +</span><span class="d">Apply permission using find</span></div>
+<div class="cmd"><span class="c">du -sh *</span><span class="d">Disk usage per file/directory</span></div>
+<div class="cmd"><span class="c">df -hT</span><span class="d">Disk space usage with file types</span></div>
+<div class="cmd"><span class="c">ln -sf src link</span><span class="d">Create symbolic link (overwrite)</span></div>
+</div>
+
+<div class="section"><h2>File Content &amp; Parsing</h2>
+<div class="cmd"><span class="c">tail -n 100 -f file.log</span><span class="d">Follow last 100 lines live</span></div>
+<div class="cmd"><span class="c">grep -rin "error" /dir</span><span class="d">Grep string recursively &amp; show line</span></div>
+<div class="cmd"><span class="c">grep -E "err|warn" file</span><span class="d">Extended regex matching</span></div>
+<div class="cmd"><span class="c">awk '{print $1, $3}' f</span><span class="d">Print specific columns</span></div>
+<div class="cmd"><span class="c">awk '/error/ {print $0}'</span><span class="d">Print lines matching regex</span></div>
+<div class="cmd"><span class="c">sed -i 's/old/new/g' file</span><span class="d">In-place global replace</span></div>
+<div class="cmd"><span class="c">cut -d',' -f2 file.csv</span><span class="d">Extract second column CSV</span></div>
+<div class="cmd"><span class="c">sort -hr file.txt</span><span class="d">Human-numerical reverse sort</span></div>
+<div class="cmd"><span class="c">uniq -c file.txt</span><span class="d">Count consecutive duplicate lines</span></div>
+<div class="cmd"><span class="c">wc -l file.txt</span><span class="d">Count total lines in file</span></div>
+</div>
+
+<div class="section"><h2>File Permissions &amp; Attributes</h2>
+<div class="cmd"><span class="c">chmod 755 file</span><span class="d">rwxr-xr-x permissions</span></div>
+<div class="cmd"><span class="c">chmod -R 600 ~/.ssh</span><span class="d">Owner read/write only recursively</span></div>
+<div class="cmd"><span class="c">chown user:group file</span><span class="d">Change owner and group</span></div>
+<div class="cmd"><span class="c">umask 022</span><span class="d">Default file creation mask</span></div>
+<div class="cmd"><span class="c">getfacl file</span><span class="d">Show file Access Control Lists</span></div>
+<div class="cmd"><span class="c">setfacl -m u:user:rwx f</span><span class="d">Grant specific user ACL access</span></div>
+<div class="cmd"><span class="c">chattr +i file</span><span class="d">Make file immutable (root cannot delete)</span></div>
+<div class="cmd"><span class="c">lsattr file</span><span class="d">List file special attributes</span></div>
+</div>
+
+<div class="section"><h2>Process Management</h2>
+<div class="cmd"><span class="c">ps auxf</span><span class="d">Display processes in a forest tree</span></div>
+<div class="cmd"><span class="c">pgrep -l -u root</span><span class="d">List processes matching criteria</span></div>
+<div class="cmd"><span class="c">kill -9 PID</span><span class="d">Force terminate process immediately</span></div>
+<div class="cmd"><span class="c">pkill -f "java -jar"</span><span class="d">Kill processes matching name string</span></div>
+<div class="cmd"><span class="c">htop</span><span class="d">Interactive process viewer</span></div>
+<div class="cmd"><span class="c">nohup command &amp;</span><span class="d">Run in background detached</span></div>
+<div class="cmd"><span class="c">jobs -l</span><span class="d">List current shell background jobs</span></div>
+<div class="cmd"><span class="c">fg %1</span><span class="d">Bring background job 1 to foreground</span></div>
+<div class="cmd"><span class="c">bg %1</span><span class="d">Resume paused job in background</span></div>
+<div class="cmd"><span class="c">lsof -i :8080</span><span class="d">Show processes holding port 8080</span></div>
+</div>
+
+<div class="section"><h2>System Info &amp; Hardware</h2>
+<div class="cmd"><span class="c">uname -a</span><span class="d">Show kernel version and architecture</span></div>
+<div class="cmd"><span class="c">uptime -p</span><span class="d">Show system uptime in human format</span></div>
+<div class="cmd"><span class="c">lscpu</span><span class="d">Show detailed CPU information</span></div>
+<div class="cmd"><span class="c">lsblk -f</span><span class="d">List block devices and filesystems</span></div>
+<div class="cmd"><span class="c">free -ht</span><span class="d">Display RAM and Swap usage info</span></div>
+<div class="cmd"><span class="c">journalctl -xe -u nginx</span><span class="d">View systemd logs for Nginx</span></div>
+<div class="cmd"><span class="c">journalctl --since today</span><span class="d">Show system logs starting today</span></div>
+<div class="cmd"><span class="c">dmesg -T --level=err</span><span class="d">Display kernel error logs</span></div>
+<div class="cmd"><span class="c">lsof +D /dir</span><span class="d">List open files inside a directory</span></div>
+</div>
+
+<div class="section"><h2>Networking Basics</h2>
+<div class="cmd"><span class="c">ip -br addr show</span><span class="d">Brief network interface IPs</span></div>
+<div class="cmd"><span class="c">ip route show</span><span class="d">Show system IP routing table</span></div>
+<div class="cmd"><span class="c">dig +short example.com</span><span class="d">Get quick DNS IP addresses</span></div>
+<div class="cmd"><span class="c">dig -x 8.8.8.8</span><span class="d">Reverse DNS lookup</span></div>
+<div class="cmd"><span class="c">nslookup google.com</span><span class="d">Standard DNS query utility</span></div>
+<div class="cmd"><span class="c">ping -c 4 1.1.1.1</span><span class="d">Send 4 ICMP echo packets</span></div>
+<div class="cmd"><span class="c">curl -ILs google.com</span><span class="d">Show HTTP headers and redirects</span></div>
+<div class="cmd"><span class="c">wget --spider URL</span><span class="d">Test URL existence without download</span></div>
+</div>
+
+<div class="section"><h2>Networking Advanced</h2>
+<div class="cmd"><span class="c">ss -tulpn</span><span class="d">List listening sockets &amp; PIDs</span></div>
+<div class="cmd"><span class="c">nmap -p 1-1000 host</span><span class="d">Scan port range on target host</span></div>
+<div class="cmd"><span class="c">nc -zv host 80-90</span><span class="d">Verify port reachability quickly</span></div>
+<div class="cmd"><span class="c">tcpdump -i eth0 -A port 80</span><span class="d">Capture ASCII HTTP packets live</span></div>
+<div class="cmd"><span class="c">tcpdump -w out.pcap host IP</span><span class="d">Save network traffic to pcap file</span></div>
+<div class="cmd"><span class="c">iptables -L -n -v</span><span class="d">List firewall rules numerically</span></div>
+<div class="cmd"><span class="c">ufw status numbered</span><span class="d">List firewall rules in Ubuntu</span></div>
+</div>
+
+<div class="section"><h2>SSH &amp; Remote Operations</h2>
+<div class="cmd"><span class="c">ssh -i key.pem user@host</span><span class="d">Connect using private key file</span></div>
+<div class="cmd"><span class="c">ssh -L 8080:localhost:80 h</span><span class="d">Local port forwarding</span></div>
+<div class="cmd"><span class="c">ssh -R 9000:localhost:3000 h</span><span class="d">Remote port forwarding</span></div>
+<div class="cmd"><span class="c">ssh-copy-id -i id_rsa user@h</span><span class="d">Install SSH public key to host</span></div>
+<div class="cmd"><span class="c">rsync -avz --delete src/ dst/</span><span class="d">Mirror directory matching source</span></div>
+<div class="cmd"><span class="c">tmux new -s work</span><span class="d">Create named TMUX session</span></div>
+<div class="cmd"><span class="c">tmux attach -t work</span><span class="d">Resume running TMUX session</span></div>
+</div>
+
+<div class="section"><h2>Storage &amp; Formatting</h2>
+<div class="cmd"><span class="c">mount | grep ext4</span><span class="d">Show all mounted ext4 filesystems</span></div>
+<div class="cmd"><span class="c">mount -o remount,rw /</span><span class="d">Remount partition as read-write</span></div>
+<div class="cmd"><span class="c">mkfs.ext4 /dev/sdb1</span><span class="d">Format partition with ext4</span></div>
+<div class="cmd"><span class="c">tar -czvf backup.tar.gz /d</span><span class="d">Compress folder into tarball</span></div>
+<div class="cmd"><span class="c">tar -xzvf bundle.tar.gz</span><span class="d">Decompress tarball archive</span></div>
+<div class="cmd"><span class="c">zip -r archive.zip folder</span><span class="d">Create zip archive</span></div>
+</div>
+
+<div class="section"><h2>Systemd &amp; Services</h2>
+<div class="cmd"><span class="c">systemctl status nginx</span><span class="d">Get state of systemd service</span></div>
+<div class="cmd"><span class="c">systemctl enable --now service</span><span class="d">Enable and start immediately</span></div>
+<div class="cmd"><span class="c">systemctl daemon-reload</span><span class="d">Reload systemd unit configurations</span></div>
+<div class="cmd"><span class="c">systemctl list-timers</span><span class="d">List active systemd timers</span></div>
+<div class="cmd"><span class="c">systemd-analyze blame</span><span class="d">Identify slow startup services</span></div>
+</div>
+
+<div class="section"><h2>Performance &amp; Troubleshooting</h2>
+<div class="cmd"><span class="c">iostat -xz 1 10</span><span class="d">Show extended disk IO statistics</span></div>
+<div class="cmd"><span class="c">vmstat 1</span><span class="d">Display system memory and CPU stats</span></div>
+<div class="cmd"><span class="c">sar -n DEV 1 5</span><span class="d">Monitor network interface metrics</span></div>
+<div class="cmd"><span class="c">strace -p PID</span><span class="d">Trace process system calls live</span></div>
+<div class="cmd"><span class="c">watch -n 1 nvidia-smi</span><span class="d">Watch GPU metrics every second</span></div>
+<div class="cmd"><span class="c">openssl s_client -connect h:443</span><span class="d">Check remote SSL handshake info</span></div>
+</div>
+
+<div class="section"><h2>Bash Scripting &amp; Tricks</h2>
+<pre class="code"># Robust bash script header
+set -euo pipefail
+IFS=$'\n\t'
+trap 'echo "Error on line $LINENO"' ERR</pre>
+<pre class="code"># Loop over list of items
+for item in "${list[@]}"; do
+    echo "Processing: ${item}"
+done</pre>
+</div>
+
+</div>
+</body>
+</html>
