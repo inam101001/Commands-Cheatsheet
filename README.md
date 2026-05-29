@@ -1,51 +1,97 @@
-# 🛠️ DevOps & SysAdmin Command Cheatsheets
+# ⚡ DevOps Commands Hub & Workbench
 
-A premium, highly legible, and beautifully designed collection of comprehensive command references for modern DevOps, Cloud, and Systems Engineering tools.
+A premium, highly interactive, and beautifully designed developer workspace and collection of comprehensive command references for modern DevOps, Cloud, and Systems Engineering tools.
 
-Each cheatsheet is formatted as an independent, single-file HTML application utilizing modern, reader-friendly typography with **JetBrains Mono** (for command precision) and **Inter** (for UI elements).
-
----
-
-## 🎨 Design Philosophy & Features
-
-*   **Soft Typography**: Built with Google Fonts **JetBrains Mono** for commands and code snippets, paired with **Inter** for description text to eliminate eye strain.
-*   **Modern Palette**: Styled with a dark-mode GitHub aesthetics theme:
-    *   **Background**: Deep slate-navy (`#0d1117`) and card layouts (`#161b22`).
-    *   **Commands**: Soft high-contrast blue (`#a5d6ff`).
-    *   **Descriptions**: Low-strain muted gray (`#7d8590`).
-    *   **Headers & Highlights**: Crisp active blue (`#58a6ff`).
-*   **3-Column Grid**: Responsive, dense layouts optimized for widescreen monitors, letting you view hundreds of commands at a single glance.
-*   **Copy-Paste Friendly**: All commands are fully ready to copy straight to your terminal without weird formatting issues.
-*   **Deep Scope**: Ranges from basic daily commands to complex, expert-level debugging, troubleshooting, and configuration snippets.
+This project is built as a **Progressive Web App (PWA)**, making it installable on your desktop or mobile device and capable of running **100% offline**—perfect for secure, air-gapped data centers or environments with restricted internet access.
 
 ---
 
-## 📂 Cheatsheet Catalog
+## 🚀 Key Features
 
-| Tool | Filename | Key Sections Covered |
-| :--- | :--- | :--- |
-| **🚀 Homepage** | [`index.html`](./index.html) | **Main hub dashboard portal** featuring interactive filters, popular copy-paste boxes, and live cross-tool global search. |
-| 🐳 **Docker** | [`docker.html`](./docker.html) | Image building/tagging, resources limits (`--cpus`, `-m`), network namespacing, volume mounts, Swarm mode, and log rotation tricks. |
-| ☸️ **Kubernetes** | [`kubernetes.html`](./kubernetes.html) | Config context management, namespaces, pod logs/copy/debug, stateful scaling, secrets management, JSONPath variables, and Helm. |
-| 🏗️ **Terraform** | [`terraform.html`](./terraform.html) | Workspaces, state manipulation (`state mv`, `import`), custom backends (S3, GCS, Azure), debugging levels, and full HCL expressions. |
-| 🔀 **Git** | [`git.html`](./git.html) | Setup, interactive rebase, stashing, submodules, multi-worktree execution, reflog debugging, and object inspection internals. |
-| ⚡ **GitHub Actions** | [`github-actions.html`](./github-actions.html) | Workflow dispatch/schedule triggers, job matrices, custom contexts, caching strategies, OIDC cloud logins, and composite actions. |
-| 🔧 **Jenkins** | [`jenkins.html`](./jenkins.html) | CLI actions, REST API crumb tokens, scripted/declarative pipelines, Docker integrations, credentials configuration, and Groovy templates. |
-| 🐧 **Linux** | [`linux.html`](./linux.html) | Storage analysis, perm layers, advanced `grep`/`awk`/`sed` utilities, custom systemd control, network analysis (`tcpdump`), and Bash standards. |
-| 🔥 **Prometheus & Grafana** | [`prometheus-grafana.html`](./prometheus-grafana.html) | TSDB maintenance, custom scrape configs, PromQL rate/histogram equations, Alertmanager routes, Loki LogQL, and Tempo traces. |
+*   **🗂️ Cheatsheet Portal**: Clean, searchable grids containing 8 comprehensive cheatsheets (Docker, Kubernetes, Terraform, Git, GitHub Actions, Jenkins, Linux, Prometheus & Grafana). Built with soft readability typography using **JetBrains Mono** and **Inter**.
+*   **⚙️ Interactive CLI Builder & Terminal Sandbox**: Visually toggle parameters and input values (images, port mappings, names) to construct commands dynamically. Run them in the built-in **Virtual Mock Terminal** to see a simulated process execution.
+*   **📄 Config Boilerplates**: Copy pre-validated templates for Docker Compose, Kubernetes Pods, or GitHub Actions CI workflows in one click.
+*   **🔍 Syntax Validator (DevOps Lint)**: A live editor that parses pasted **JSON** and **YAML** code, auto-detects structure, reports validation errors, and warns you if you use tab characters (which YAML prohibits).
+*   **📱 Progressive Web App (PWA)**: Works offline and is fully installable on Chrome, Edge, Safari, and Firefox.
+*   **🔗 Quick Switch Navigation**: Every single cheatsheet page includes a glassy sticky header dropdown to instantly teleport between different tools without needing to hit the browser's back button.
 
 ---
 
-## 💻 Quick Start
+## 📂 Project Structure
 
-Simply open any of the `.html` files directly in your web browser of choice (Chrome, Edge, Firefox, Safari):
+```bash
+├── index.html          # Main portal, CLI builder, templates, and YAML validator
+├── sw.js               # Service Worker caching assets for offline PWA usage
+├── manifest.json       # Web App Manifest describing installation configurations
+├── README.md           # This documentation guide
+├── docker.html         # 🐳 Docker cheatsheet
+├── kubernetes.html     # ☸️ Kubernetes cheatsheet
+├── terraform.html      # 🏗️ Terraform cheatsheet
+├── git.html            # 🔀 Git cheatsheet
+├── github-actions.html # ⚡ GitHub Actions cheatsheet
+├── jenkins.html        # 🔧 Jenkins cheatsheet
+├── linux.html          # 🐧 Linux cheatsheet
+└── prometheus-grafana.html # 🔥 Prometheus & Grafana cheatsheet
+```
+
+---
+
+## 💻 Local Quick Start
+
+Simply double-click **`index.html`** or run it from your terminal:
 
 ```bash
 # On Linux/macOS
-open docker.html
+open index.html
 
 # On Windows (PowerShell)
-Start-Process "docker.html"
+Start-Process "index.html"
 ```
 
-*Tip: Bookmark the files in your browser's favorites bar for instant access during debugging sessions!*
+*Tip: Click the "Install" icon in your browser's address bar (supported in Chrome/Edge) to run it as a standalone desktop app!*
+
+---
+
+## 🌐 How to Deploy to GitHub Pages (100% Free)
+
+Since this is a client-side frontend-only application, you can deploy it to **GitHub Pages** in under 3 minutes for free:
+
+### Step 1: Create a GitHub Repository
+1. Log in to [GitHub](https://github.com).
+2. Click **New** (or "+" in the top-right corner) to create a new repository.
+3. Name your repository (e.g., `devops-cheatsheet`).
+4. Set it to **Public** (required for free GitHub Pages hosting).
+5. Leave "Add a README" unchecked, and click **Create repository**.
+
+### Step 2: Push your Code to GitHub
+Open your terminal/PowerShell inside your cheatsheet directory (`c:\Users\inam_\Desktop\Commands Cheatsheet`) and run:
+
+```bash
+# Initialize a local git repository
+git init -b main
+
+# Stage all files (HTMLs, sw.js, manifest, README)
+git add .
+
+# Create the initial commit
+git commit -m "feat: launch DevOps Workbench & Commands Hub"
+
+# Link your local repo to your GitHub repository (replace with your repo URL)
+git remote add origin https://github.com/YOUR_USERNAME/devops-cheatsheet.git
+
+# Push your files to GitHub
+git push -u origin main
+```
+
+### Step 3: Enable GitHub Pages
+1. Go to your repository page on GitHub.
+2. Click the **Settings** tab (the gear icon on the top nav bar).
+3. On the left sidebar under "Code and automation", click **Pages**.
+4. Under "Build and deployment" -> **Source**, select **Deploy from a branch**.
+5. Under **Branch**, change `None` to **`main`** (or `master`), select `/(root)`, and click **Save**.
+
+### Step 4: Access your Live Website!
+GitHub will trigger a background workflow deployment (takes ~30 seconds). 
+1. Refresh the **Pages** settings screen.
+2. At the top of the section, you will see a banner: **"Your site is live at..."**
+3. Click the link (usually `https://YOUR_USERNAME.github.io/devops-cheatsheet/`) to launch your public DevOps Commands Hub!
