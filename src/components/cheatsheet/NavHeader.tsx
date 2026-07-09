@@ -15,6 +15,7 @@ const TOOL_PAGES = [
   { href: "/troubleshoot", label: "🧭 Troubleshoot" },
   { href: "/checklists", label: "✅ Checklists" },
   { href: "/tools", label: "🛠️ Tools" },
+  { href: "/validate", label: "🔍 Validate" },
 ];
 
 export function NavHeader() {
