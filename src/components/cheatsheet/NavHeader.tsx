@@ -8,7 +8,10 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 // Growing list of feature pages beyond the per-tool cheatsheets. Gets a
 // proper nav (sidebar / command palette) in the M11 integration pass —
 // this flat list is the interim, extensible home for it.
-const TOOL_PAGES = [{ href: "/explain", label: "🧩 Explain" }];
+const TOOL_PAGES = [
+  { href: "/explain", label: "🧩 Explain" },
+  { href: "/errors", label: "🩹 Errors" },
+];
 
 export function NavHeader() {
   const router = useRouter();
