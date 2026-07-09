@@ -6,6 +6,8 @@ import { PortalPanel } from "./PortalPanel";
 import { CommandBuilderPanel } from "./CommandBuilderPanel";
 import { TemplatesPanel } from "./TemplatesPanel";
 import { ValidatorPanel } from "./ValidatorPanel";
+import { NodeGraphBackground } from "@/components/NodeGraphBackground";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type Tab = "portal" | "builder" | "templates" | "validator";
 
@@ -22,33 +24,40 @@ export function HomeShell() {
   return (
     <ToastProvider>
       <div className="min-h-screen bg-bg px-5 py-5 text-text-body">
-        <header className="mx-auto mt-5 mb-10 max-w-[1200px] text-center">
-          <div className="mb-3 inline-flex items-center gap-3">
-            <span className="animate-logo-pulse text-4xl">⚡</span>
-            <h1 className="bg-gradient-to-br from-[#58a6ff] to-[#bc8cff] bg-clip-text font-display text-4xl font-extrabold tracking-tight text-transparent">
-              OpsDeck
-            </h1>
-          </div>
-          <p className="mx-auto mb-6 max-w-[650px] text-[17px] leading-relaxed font-light text-text-muted">
-            A full-featured developer workflow studio. Switch tabs below to access interactive
-            builders, template generators, live validators, and cheatsheet search portals.
-          </p>
+        <div className="absolute top-5 right-5 z-10">
+          <ThemeToggle />
+        </div>
 
-          <nav className="mx-auto flex max-w-[750px] flex-wrap justify-center gap-2 rounded-full border border-border bg-surface-2/60 p-1.5 backdrop-blur-md">
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={`flex items-center gap-2 rounded-full px-6 py-2.5 text-[15px] font-semibold ${
-                  tab === t.id
-                    ? "bg-border-3 text-text shadow-lg"
-                    : "text-text-muted hover:text-text"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </nav>
+        <header className="relative mx-auto mt-5 mb-10 max-w-[1200px] overflow-hidden rounded-2xl px-6 py-12 text-center">
+          <NodeGraphBackground className="opacity-70" />
+          <div className="relative">
+            <div className="mb-3 inline-flex items-center gap-3">
+              <span className="animate-logo-pulse text-4xl">⚡</span>
+              <h1 className="font-display text-4xl font-extrabold tracking-tight text-text">
+                OpsDeck
+              </h1>
+            </div>
+            <p className="mx-auto mb-6 max-w-[650px] text-[17px] leading-relaxed font-light text-text-muted">
+              The cloud-native command center for DevOps engineers. Interactive builders, template
+              generators, live validators, and searchable cheatsheets — all running in your browser.
+            </p>
+
+            <nav className="glass-panel mx-auto flex max-w-[750px] flex-wrap justify-center gap-2 rounded-full p-1.5">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`flex items-center gap-2 rounded-full px-6 py-2.5 text-[15px] font-semibold ${
+                    tab === t.id
+                      ? "bg-border-3 text-text shadow-lg"
+                      : "text-text-muted hover:text-text"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+          </div>
         </header>
 
         <main>

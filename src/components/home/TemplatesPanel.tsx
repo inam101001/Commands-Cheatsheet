@@ -11,7 +11,7 @@ export function TemplatesPanel() {
 
   return (
     <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
-      <div className="rounded-xl border border-border bg-surface p-5">
+      <div className="glass-panel rounded-xl p-5">
         <div className="mb-4 font-display text-xl text-accent-blue">Boilerplate Catalog</div>
         {templates.map((tpl) => (
           <button
@@ -31,7 +31,7 @@ export function TemplatesPanel() {
         ))}
       </div>
 
-      <div className="flex flex-col rounded-xl border border-border bg-surface p-6">
+      <div className="flex flex-col glass-panel rounded-xl p-6">
         <div className="mb-4 flex items-center justify-between">
           <span className="font-semibold">{active.title}</span>
           <button

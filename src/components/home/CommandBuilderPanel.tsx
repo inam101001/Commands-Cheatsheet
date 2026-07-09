@@ -113,7 +113,7 @@ export function CommandBuilderPanel() {
 
   return (
     <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="rounded-xl border border-border bg-surface p-6">
+      <div className="glass-panel rounded-xl p-6">
         <div className="mb-4 font-display text-xl text-accent-blue">
           Interactive CLI Constructor
         </div>

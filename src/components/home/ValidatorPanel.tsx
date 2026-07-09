@@ -49,7 +49,7 @@ export function ValidatorPanel() {
 
   return (
     <div className="mx-auto max-w-[1200px]">
-      <div className="rounded-xl border border-border bg-surface p-5">
+      <div className="glass-panel rounded-xl p-5">
         <div className="mb-3.5 flex items-center justify-between">
           <span className="font-display text-xl text-accent-blue">
             JSON &amp; YAML Lint Validator

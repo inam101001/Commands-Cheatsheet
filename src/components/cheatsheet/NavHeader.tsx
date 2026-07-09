@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { tools } from "@/data/tools";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function NavHeader() {
   const router = useRouter();
@@ -10,14 +11,14 @@ export function NavHeader() {
   const currentSlug = pathname.replace(/^\//, "");
 
   return (
-    <div className="sticky top-0 z-50 mb-8 flex items-center justify-between gap-4 rounded-xl border border-border bg-surface-2/95 px-5 py-3 backdrop-blur-md">
+    <div className="glass-panel sticky top-0 z-50 mb-8 flex items-center justify-between gap-4 rounded-xl px-5 py-3">
       <Link
         href="/"
         className="font-sans text-[13px] font-semibold text-accent-blue hover:text-accent-blue-light"
       >
         ⚡ OpsDeck
       </Link>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <span className="hidden text-[11px] text-text-muted sm:inline">
           Quick Switch:
         </span>
@@ -35,6 +36,7 @@ export function NavHeader() {
             </option>
           ))}
         </select>
+        <ThemeToggle />
       </div>
     </div>
   );

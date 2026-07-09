@@ -34,8 +34,16 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0d1117",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#05060a" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  ],
 };
+
+// Static, hardcoded script — no user input is ever interpolated here. Runs
+// before paint so the stored/OS theme applies immediately, avoiding a
+// flash of the wrong theme (the standard pattern for runtime theme toggles).
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('opsdeck-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -44,6 +52,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} ${outfit.variable} font-sans antialiased`}
       >

@@ -1,28 +1,107 @@
 @import "tailwindcss";
 
+/*
+ * Theme tokens are declared twice on purpose:
+ * 1. `@theme` maps Tailwind's generated utility names (bg-surface, text-accent-blue, ...)
+ *    to CSS custom properties, so class names never need to change between themes.
+ * 2. The `:root` blocks below assign the actual color values per theme and are what
+ *    ThemeToggle flips at runtime via the `data-theme` attribute.
+ */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
   --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, sans-serif;
 
-  --color-bg: #080b10;
-  --color-surface: #0d1117;
-  --color-surface-2: #161b22;
-  --color-border: #21262d;
-  --color-border-2: #1c2128;
-  --color-border-3: #30363d;
-  --color-text: #f0f6fc;
-  --color-text-body: #c9d1d9;
-  --color-text-muted: #8b949e;
-  --color-text-dim: #7d8590;
-  --color-accent-blue: #58a6ff;
-  --color-accent-blue-light: #a5d6ff;
-  --color-accent-blue-2: #388bfd;
-  --color-accent-cyan: #39d353;
-  --color-accent-green: #3fb950;
-  --color-accent-error: #ff7b72;
-  --color-accent-purple: #bc8cff;
-  --color-accent-orange: #ffa657;
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-surface-3: var(--c-surface-3);
+  --color-border: var(--c-border);
+  --color-border-2: var(--c-border-2);
+  --color-border-3: var(--c-border-3);
+  --color-text: var(--c-text);
+  --color-text-body: var(--c-text-body);
+  --color-text-muted: var(--c-text-muted);
+  --color-text-dim: var(--c-text-dim);
+  --color-accent-blue: var(--c-accent);
+  --color-accent-blue-light: var(--c-accent-light);
+  --color-accent-blue-2: var(--c-accent-2);
+  --color-accent-cyan: var(--c-success);
+  --color-accent-green: var(--c-success);
+  --color-accent-error: var(--c-error);
+  --color-accent-purple: var(--c-violet);
+  --color-accent-orange: var(--c-warning);
+}
+
+:root {
+  color-scheme: dark;
+
+  --c-bg: #05060a;
+  --c-surface: #0a0c14;
+  --c-surface-2: #0d0f17;
+  --c-surface-3: #12141f;
+  --c-border: #1c2030;
+  --c-border-2: #171a26;
+  --c-border-3: #2a2f42;
+  --c-text: #e4e7ec;
+  --c-text-body: #c7cbd6;
+  --c-text-muted: #8b93a7;
+  --c-text-dim: #6b7285;
+  --c-accent: #22d3ee;
+  --c-accent-light: #67e8f9;
+  --c-accent-2: #38bdf8;
+  --c-violet: #a78bfa;
+  --c-success: #34d399;
+  --c-warning: #fbbf24;
+  --c-error: #f87171;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --c-bg: #ffffff;
+  --c-surface: #f4f4f6;
+  --c-surface-2: #e9e9ed;
+  --c-surface-3: #f0f0f3;
+  --c-border: #d8d8de;
+  --c-border-2: #e4e4e9;
+  --c-border-3: #c1c1cb;
+  --c-text: #18181b;
+  --c-text-body: #27272a;
+  --c-text-muted: #52525b;
+  --c-text-dim: #71717a;
+  --c-accent: #0891b2;
+  --c-accent-light: #0e7490;
+  --c-accent-2: #0284c7;
+  --c-violet: #7c3aed;
+  --c-success: #059669;
+  --c-warning: #b45309;
+  --c-error: #dc2626;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) {
+    color-scheme: light;
+
+    --c-bg: #ffffff;
+    --c-surface: #f4f4f6;
+    --c-surface-2: #e9e9ed;
+    --c-surface-3: #f0f0f3;
+    --c-border: #d8d8de;
+    --c-border-2: #e4e4e9;
+    --c-border-3: #c1c1cb;
+    --c-text: #18181b;
+    --c-text-body: #27272a;
+    --c-text-muted: #52525b;
+    --c-text-dim: #71717a;
+    --c-accent: #0891b2;
+    --c-accent-light: #0e7490;
+    --c-accent-2: #0284c7;
+    --c-violet: #7c3aed;
+    --c-success: #059669;
+    --c-warning: #b45309;
+    --c-error: #dc2626;
+  }
 }
 
 body {
@@ -30,13 +109,41 @@ body {
   color: var(--color-text-body);
   font-family: var(--font-sans);
   background-image:
-    radial-gradient(at 0% 0%, rgba(88, 166, 255, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(188, 140, 255, 0.08) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, color-mix(in oklab, var(--c-accent) 8%, transparent) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, color-mix(in oklab, var(--c-violet) 8%, transparent) 0px, transparent 50%);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 ::selection {
-  background: rgba(88, 166, 255, 0.3);
+  background: color-mix(in oklab, var(--c-accent) 30%, transparent);
   color: var(--color-text);
+}
+
+/* Glass / elevated panel surface used for primary containers ("Mission Control" consoles) */
+.glass-panel {
+  background: color-mix(in oklab, var(--c-surface) 88%, transparent);
+  border: 1px solid var(--c-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, var(--c-text) 4%, transparent) inset,
+    0 20px 40px -24px color-mix(in oklab, #000000 60%, transparent);
+}
+
+:root[data-theme="light"] .glass-panel {
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, #ffffff 60%, transparent) inset,
+    0 12px 28px -20px color-mix(in oklab, #000000 18%, transparent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .glass-panel {
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, #ffffff 60%, transparent) inset,
+      0 12px 28px -20px color-mix(in oklab, #000000 18%, transparent);
+  }
 }
 
 @keyframes logo-pulse {
@@ -48,7 +155,7 @@ body {
   50% {
     transform: scale(1.08);
     opacity: 1;
-    filter: drop-shadow(0 0 15px rgba(88, 166, 255, 0.4));
+    filter: drop-shadow(0 0 15px color-mix(in oklab, var(--c-accent) 40%, transparent));
   }
 }
 
@@ -69,4 +176,18 @@ body {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 4px color-mix(in oklab, currentColor 0%, transparent);
+  }
+}
+
+.animate-status-pulse {
+  animation: status-pulse 2s infinite ease-in-out;
 }
