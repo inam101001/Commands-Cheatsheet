@@ -2,9 +2,9 @@
 
 The cloud-native command center for DevOps, Cloud, and Systems Engineering — built with **Next.js 16** (App Router), **React 19**, **TypeScript**, and **Tailwind CSS v4**.
 
-It combines a searchable cheatsheet library with a set of interactive tools: a CLI command builder with a mock terminal, a config boilerplate generator, and a live YAML/JSON validator. The app is installable as a **Progressive Web App** and works offline. Everything runs entirely client-side — nothing you paste or type is ever sent to a server.
+A searchable cheatsheet library plus a full toolbench of interactive tools — command explainers, an error decoder, a multi-cloud CLI Rosetta Stone, schema-aware validators, calculators, and a command palette tying it all together. The app is installable as a **Progressive Web App** and works offline. Everything runs entirely client-side — nothing you paste or type is ever sent to a server.
 
-See [`plan.md`](./plan.md) for where this project is headed: interactive command explainers, an error-message decoder, a multi-cloud CLI Rosetta Stone, schema-aware validators, and a full "Mission Control" visual redesign.
+See [`plan.md`](./plan.md) for the original product vision/research this was built from, and [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) for the milestone-by-milestone build log. Want to contribute a command, error entry, or a whole new tool? See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ---
 
@@ -12,12 +12,13 @@ See [`plan.md`](./plan.md) for where this project is headed: interactive command
 
 ### 🗂️ Cheatsheet Hub
 
-Eight comprehensive, searchable command references, ~1,700 commands total:
+Nine comprehensive, searchable command references:
 
 | Tool | Coverage |
 | --- | --- |
 | 🐳 **Docker** | Image builds, container lifecycle, volumes, networking, Compose, Swarm |
-| ☸️ **Kubernetes** | `kubectl` reference, deployments, rollbacks, JSONPath, Helm |
+| ☸️ **Kubernetes** | `kubectl` reference, deployments, rollbacks, JSONPath |
+| ⎈ **Helm** | Repos, install/upgrade/rollback, values precedence, chart dev, testing, plugins |
 | 🏗️ **Terraform** | CLI workflow, HCL syntax, state management, workspaces, modules |
 | 🔀 **Git** | Config, branching, interactive rebase, stash, worktrees, reflog |
 | ⚡ **GitHub Actions** | Workflow triggers, jobs/runners, matrices, OIDC, environments |
@@ -25,19 +26,33 @@ Eight comprehensive, searchable command references, ~1,700 commands total:
 | 🐧 **Linux** | Filesystem, permissions, process management, networking, Bash |
 | 🔥 **Prometheus & Grafana** | PromQL, Alertmanager, Loki LogQL, Tempo tracing |
 
-Every command across every tool is indexed by a single homepage search bar — search by command text, description, or tool name and copy any result with one click. Each cheatsheet page also has a sticky "Quick Switch" dropdown to jump directly to another tool.
+Every command row is deep-linkable (`/tool#command-slug`), bookmarkable to **My Snippets**, and indexed by the command palette and homepage search bar.
 
-### ⚙️ Interactive Command Builder
+### 🧩 Interactive Knowledge Tools
 
-Build a `docker run` or `kubectl create deployment` command by toggling flags and filling in fields, watch the command string update live, then "run" it in a simulated mock terminal that mimics real CLI output.
+- **Command Explainer** (`/explain`) — paste a Docker/kubectl/Terraform/git command, get each flag broken down inline.
+- **Error Decoder** (`/errors`) — searchable library of real error strings with cause, fix, and related commands.
+- **Troubleshooting Flowcharts** (`/troubleshoot`) — clickable decision trees for common Kubernetes/Docker/CI failures.
+- **Cloud CLI Rosetta Stone** (`/rosetta`) — AWS CLI / Azure CLI / gcloud / kubectl equivalents, searchable by task.
+- **Production-Readiness Checklists** (`/checklists`) — interactive, exportable, progress saved locally.
+- **Cloud-Native Glossary** (`/glossary`) — CNCF/DevOps jargon in plain English, searchable.
+- **Incident Templates** (`/incidents`) — blameless postmortem generator and on-call handoff generator, both Markdown-exportable.
 
-### 📄 Config Boilerplates
+### 🛠️ Calculators & Generators (`/tools`)
 
-One-click copy of ready-to-use templates: a Docker Compose multi-service stack, a Kubernetes Pod spec with ConfigMap/Secret references, and a GitHub Actions Node.js CI workflow.
+CIDR/subnet calculator, cron builder & explainer (bidirectional), YAML⇄JSON converter, JWT decoder, HTTP status/POSIX exit code reference, Kubernetes resource sanity calculator, and a Terraform plan-output prettifier.
 
-### 🔍 Syntax Validator
+### 🔍 Validators
 
-Paste JSON or YAML and get live validation feedback, including line numbers on YAML parse errors (powered by `js-yaml`).
+- **Kubernetes Manifest Validator** (`/validate`) — schema-aware validation (`ajv`) for Deployment/Service/Ingress/StatefulSet/ConfigMap/Secret/Job/CronJob, errors mapped to line numbers.
+- **Dockerfile Linter** (`/lint`) — rule-based checks (missing `USER`, `:latest` tags, `apt-get` pitfalls, `ADD` vs `COPY`, and more).
+
+### ⚡ Productivity Layer
+
+- **Command palette** (`Ctrl/Cmd+K`) — fuzzy search across every page and every command, keyboard-navigable.
+- **My Snippets** (`/snippets`) — bookmark any command row, view/remove them from one page.
+- **Recently viewed** — surfaced in the command palette.
+- **Print stylesheet** — clean printed/PDF output for cheat sheet pages.
 
 ### 📱 Progressive Web App
 
@@ -50,7 +65,7 @@ Installable from the browser address bar. A service worker caches visited pages 
 - **Framework**: Next.js 16 (App Router, Turbopack)
 - **UI**: React 19, Tailwind CSS v4
 - **Language**: TypeScript (strict mode)
-- **Validation**: `js-yaml` for YAML/JSON parsing
+- **Validation**: `ajv` (schema-aware K8s manifest validation), `js-yaml` (YAML/JSON parsing)
 - **Fonts**: Inter, JetBrains Mono, Outfit (via `next/font/google`)
 - **Linting**: ESLint 9 flat config (Next.js core-web-vitals + TypeScript + React Hooks rules)
 
@@ -60,26 +75,21 @@ Installable from the browser address bar. A service worker caches visited pages 
 
 ```bash
 src/
-├── app/                        # Next.js App Router routes
-│   ├── page.tsx                  # Home (portal / builder / templates / validator)
-│   ├── layout.tsx                 # Root layout, fonts, service worker registration
-│   ├── manifest.ts                # PWA manifest (Next.js metadata route)
-│   └── <tool>/page.tsx             # One route per cheatsheet (docker, kubernetes, ...)
+├── app/                        # Next.js App Router routes — one folder per feature/tool page
 ├── components/
-│   ├── cheatsheet/                # Shared cheatsheet page template (NavHeader, Card, blocks)
-│   └── home/                      # Homepage panels (Portal, Builder, Templates, Validator)
+│   ├── cheatsheet/                # Shared cheatsheet template (NavHeader, Card, CardBlock, RowActions)
+│   ├── home/                      # Homepage panels
+│   ├── tools/, validator/, glossary/, incidents/, snippets/, errors/, flowcharts/, checklists/, rosetta/, cron/...
+│   └── CommandPalette.tsx, RecentlyViewedTracker.tsx
 └── data/
     ├── cheatsheets/*.ts            # Structured command data per tool
-    ├── tools.ts                    # Tool metadata used by the portal grid + nav dropdown
-    ├── templates.ts                # Config boilerplate catalog
-    ├── searchIndex.ts               # Flattened search index built from all cheatsheet data
+    ├── tools.ts                    # Tool metadata used by the portal grid + Quick Switch
+    ├── errors.ts, rosetta.ts, checklists.ts, glossary.ts, paletteRoutes.ts
+    ├── searchIndex.ts               # Flattened, anchor-linked search index built from all cheatsheet data
     └── types.ts                     # Shared TypeScript types
-public/
-├── sw.js                         # Service worker (offline app-shell caching)
-└── icon.svg
 ```
 
-Adding a new command to an existing tool means editing its file in `src/data/cheatsheets/`; adding a new tool means creating a new data file, a route under `src/app/`, and an entry in `src/data/tools.ts`.
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the exact shape of every data file and how to add to each one.
 
 ---
 
@@ -91,7 +101,7 @@ npm run dev       # http://localhost:3000
 ```
 
 ```bash
-npm run build       # production build
+npm run build       # production build (also runs the TypeScript check)
 npm run start        # serve the production build
 npm run lint          # ESLint
 ```
@@ -100,4 +110,4 @@ npm run lint          # ESLint
 
 ## Deployment
 
-Standard Next.js app — deploy to **Vercel** by importing the repository at [vercel.com/new](https://vercel.com/new). No environment variables required.
+Standard Next.js app — deploy to **Vercel** by importing the repository at [vercel.com/new](https://vercel.com/new). No environment variables required — the entire app is static/client-side.
