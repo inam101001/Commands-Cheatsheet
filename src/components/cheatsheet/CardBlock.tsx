@@ -1,4 +1,6 @@
 import type { CheatsheetBlock } from "@/data/types";
+import { getTool } from "@/data/tools";
+import { RowActions } from "./RowActions";
 
 function CodeBlock({ text }: { text: string }) {
   const lines = text.split("\n");
@@ -16,7 +18,13 @@ function CodeBlock({ text }: { text: string }) {
   );
 }
 
-export function CardBlock({ block }: { block: CheatsheetBlock }) {
+interface CardBlockProps {
+  block: CheatsheetBlock;
+  toolSlug?: string;
+  anchorId?: string;
+}
+
+export function CardBlock({ block, toolSlug, anchorId }: CardBlockProps) {
   switch (block.type) {
     case "divider":
       return (
@@ -24,9 +32,13 @@ export function CardBlock({ block }: { block: CheatsheetBlock }) {
           {block.label}
         </div>
       );
-    case "row":
+    case "row": {
+      const tool = toolSlug ? getTool(toolSlug) : undefined;
       return (
-        <div className="flex items-baseline gap-2.5 border-b border-border-2 py-[3px] last:border-b-0">
+        <div
+          id={anchorId}
+          className="group flex scroll-mt-20 items-baseline gap-2.5 border-b border-border-2 py-[3px] last:border-b-0"
+        >
           <span className="flex-shrink-0 font-mono text-[11.5px] leading-relaxed whitespace-nowrap text-accent-blue-light">
             {block.cmd}
           </span>
@@ -35,8 +47,21 @@ export function CardBlock({ block }: { block: CheatsheetBlock }) {
               {block.desc}
             </span>
           )}
+          {anchorId && toolSlug && tool && (
+            <RowActions
+              bookmark={{
+                id: `${toolSlug}#${anchorId}`,
+                toolSlug,
+                tool: tool.name,
+                cmd: block.cmd,
+                desc: block.desc ?? "",
+                href: `/${toolSlug}#${anchorId}`,
+              }}
+            />
+          )}
         </div>
       );
+    }
     case "code":
       return <CodeBlock text={block.text} />;
     case "note":

@@ -7,7 +7,14 @@ const SPAN_CLASS: Record<1 | 2 | 3, string> = {
   3: "lg:col-span-3",
 };
 
-export function Card({ card }: { card: CheatsheetCard }) {
+interface CardProps {
+  card: CheatsheetCard;
+  cardIndex: number;
+  toolSlug: string;
+  rowAnchors: Map<string, string>;
+}
+
+export function Card({ card, cardIndex, toolSlug, rowAnchors }: CardProps) {
   return (
     <div
       className={`flex flex-col overflow-hidden rounded-md border border-border bg-surface-2 ${SPAN_CLASS[card.span]}`}
@@ -19,7 +26,12 @@ export function Card({ card }: { card: CheatsheetCard }) {
       </div>
       <div className="flex-1 px-3.5 pt-2.5 pb-3">
         {card.blocks.map((block, i) => (
-          <CardBlock key={i} block={block} />
+          <CardBlock
+            key={i}
+            block={block}
+            toolSlug={toolSlug}
+            anchorId={rowAnchors.get(`${cardIndex}-${i}`)}
+          />
         ))}
       </div>
     </div>

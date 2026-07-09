@@ -191,3 +191,25 @@ body {
 .animate-status-pulse {
   animation: status-pulse 2s infinite ease-in-out;
 }
+
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+
+  body {
+    background-image: none;
+  }
+
+  .glass-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  * {
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

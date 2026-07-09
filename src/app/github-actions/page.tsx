@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <CheatsheetPage data={data} />;
+  return <CheatsheetPage data={data} toolSlug="github-actions" />;
 }

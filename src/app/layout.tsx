@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { CommandPalette } from "@/components/CommandPalette";
+import { RecentlyViewedTracker } from "@/components/RecentlyViewedTracker";
 import "./globals.css";
 
 const inter = Inter({
@@ -59,6 +61,8 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} ${outfit.variable} font-sans antialiased`}
       >
         {children}
+        <RecentlyViewedTracker />
+        <CommandPalette />
         <ServiceWorkerRegister />
       </body>
     </html>

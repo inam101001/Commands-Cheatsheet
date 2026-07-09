@@ -1,8 +1,11 @@
 import type { CheatsheetData } from "@/data/types";
+import { buildRowAnchorMap } from "@/lib/anchors";
 import { NavHeader } from "./NavHeader";
 import { Card } from "./Card";
 
-export function CheatsheetPage({ data }: { data: CheatsheetData }) {
+export function CheatsheetPage({ data, toolSlug }: { data: CheatsheetData; toolSlug: string }) {
+  const rowAnchors = buildRowAnchorMap(data);
+
   return (
     <div className="min-h-screen bg-bg px-5 py-7 pb-12 text-text-body">
       <div className="mx-auto max-w-[1600px]">
@@ -19,7 +22,7 @@ export function CheatsheetPage({ data }: { data: CheatsheetData }) {
 
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
           {data.cards.map((card, i) => (
-            <Card key={i} card={card} />
+            <Card key={i} card={card} cardIndex={i} toolSlug={toolSlug} rowAnchors={rowAnchors} />
           ))}
         </div>
       </div>

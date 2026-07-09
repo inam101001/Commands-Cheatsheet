@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { tools } from "@/data/tools";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { openCommandPalette } from "@/components/CommandPalette";
 
 // Growing list of feature pages beyond the per-tool cheatsheets. Gets a
 // proper nav (sidebar / command palette) in the M11 integration pass —
@@ -17,6 +18,7 @@ const TOOL_PAGES = [
   { href: "/tools", label: "🛠️ Tools" },
   { href: "/validate", label: "🔍 Validate" },
   { href: "/lint", label: "🧹 Lint" },
+  { href: "/snippets", label: "📌 Snippets" },
 ];
 
 export function NavHeader() {
@@ -25,7 +27,7 @@ export function NavHeader() {
   const currentSlug = pathname.replace(/^\//, "");
 
   return (
-    <div className="glass-panel sticky top-0 z-50 mb-8 flex items-center justify-between gap-4 rounded-xl px-5 py-3">
+    <div className="glass-panel print-hide sticky top-0 z-50 mb-8 flex items-center justify-between gap-4 rounded-xl px-5 py-3">
       <Link
         href="/"
         className="font-sans text-[13px] font-semibold text-accent-blue hover:text-accent-blue-light"
@@ -46,6 +48,14 @@ export function NavHeader() {
         ))}
       </div>
       <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={openCommandPalette}
+          title="Open command palette"
+          className="hidden items-center gap-1.5 rounded-md border border-border-3 bg-bg px-2.5 py-1.5 text-[11px] text-text-muted hover:border-accent-blue hover:text-text sm:flex"
+        >
+          🔎 <kbd className="font-mono text-[10px]">Ctrl K</kbd>
+        </button>
         <span className="hidden text-[11px] text-text-muted sm:inline">
           Quick Switch:
         </span>
