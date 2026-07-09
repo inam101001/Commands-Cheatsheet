@@ -13,6 +13,7 @@ const TOOL_PAGES = [
   { href: "/errors", label: "🩹 Errors" },
   { href: "/rosetta", label: "🌐 Rosetta" },
   { href: "/troubleshoot", label: "🧭 Troubleshoot" },
+  { href: "/checklists", label: "✅ Checklists" },
 ];
 
 export function NavHeader() {
@@ -46,6 +47,8 @@ export function NavHeader() {
           Quick Switch:
         </span>
         <select
+          id="quick-switch"
+          name="quick-switch"
           className="cursor-pointer rounded-md border border-border-3 bg-bg px-3 py-1.5 text-[11px] text-text-body outline-none focus:border-accent-blue"
           value={currentSlug || ""}
           onChange={(e) => {
