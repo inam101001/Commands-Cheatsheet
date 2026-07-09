@@ -16,6 +16,7 @@ const TOOL_PAGES = [
   { href: "/checklists", label: "✅ Checklists" },
   { href: "/tools", label: "🛠️ Tools" },
   { href: "/validate", label: "🔍 Validate" },
+  { href: "/lint", label: "🧹 Lint" },
 ];
 
 export function NavHeader() {
