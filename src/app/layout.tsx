@@ -22,9 +22,12 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "DevOps Commands Hub & Workbench",
+  title: {
+    default: "OpsDeck",
+    template: "%s · OpsDeck",
+  },
   description:
-    "A premium, highly interactive developer workspace and collection of comprehensive command references for modern DevOps, Cloud, and Systems Engineering tools.",
+    "The cloud-native command center for DevOps engineers — searchable cheatsheets, interactive command explainers, and validators for Docker, Kubernetes, Terraform, and more. Everything runs in your browser.",
   manifest: "/manifest.webmanifest",
 };
 

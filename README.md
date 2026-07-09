@@ -1,8 +1,10 @@
-# ⚡ DevOps Commands Hub & Workbench
+# ⚡ OpsDeck
 
-A premium, highly interactive developer workspace for DevOps, Cloud, and Systems Engineering command references — built with **Next.js 16** (App Router), **React 19**, **TypeScript**, and **Tailwind CSS v4**.
+The cloud-native command center for DevOps, Cloud, and Systems Engineering — built with **Next.js 16** (App Router), **React 19**, **TypeScript**, and **Tailwind CSS v4**.
 
-It combines a searchable cheatsheet library with a set of interactive tools: a CLI command builder with a mock terminal, a config boilerplate generator, and a live YAML/JSON validator. The app is installable as a **Progressive Web App** and works offline.
+It combines a searchable cheatsheet library with a set of interactive tools: a CLI command builder with a mock terminal, a config boilerplate generator, and a live YAML/JSON validator. The app is installable as a **Progressive Web App** and works offline. Everything runs entirely client-side — nothing you paste or type is ever sent to a server.
+
+See [`plan.md`](./plan.md) for where this project is headed: interactive command explainers, an error-message decoder, a multi-cloud CLI Rosetta Stone, schema-aware validators, and a full "Mission Control" visual redesign.
 
 ---
 

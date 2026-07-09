@@ -26,7 +26,7 @@ export function HomeShell() {
           <div className="mb-3 inline-flex items-center gap-3">
             <span className="animate-logo-pulse text-4xl">⚡</span>
             <h1 className="bg-gradient-to-br from-[#58a6ff] to-[#bc8cff] bg-clip-text font-display text-4xl font-extrabold tracking-tight text-transparent">
-              DevOps Commands Hub &amp; Workbench
+              OpsDeck
             </h1>
           </div>
           <p className="mx-auto mb-6 max-w-[650px] text-[17px] leading-relaxed font-light text-text-muted">
@@ -67,7 +67,7 @@ export function HomeShell() {
         </main>
 
         <footer className="mx-auto mt-20 max-w-[1200px] border-t border-border pt-6 text-center text-sm text-text-muted">
-          <p>© 2026 DevOps Commands Hub. Built to maximize developer speed and eliminate search fatigue.</p>
+          <p>© 2026 OpsDeck. Built to maximize developer speed and eliminate search fatigue.</p>
         </footer>
       </div>
     </ToastProvider>

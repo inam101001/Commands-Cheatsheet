@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "DevOps Commands Hub",
-    short_name: "DevOps Hub",
+    name: "OpsDeck",
+    short_name: "OpsDeck",
     description:
-      "An ultimate interactive command center for fast search, reference, and copy-paste dev cheatsheets.",
+      "The cloud-native command center for DevOps engineers — searchable cheatsheets, interactive command explainers, and validators, all running in your browser.",
     start_url: "/",
     display: "standalone",
     background_color: "#080b10",

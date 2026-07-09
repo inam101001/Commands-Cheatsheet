@@ -15,7 +15,7 @@ export function NavHeader() {
         href="/"
         className="font-sans text-[13px] font-semibold text-accent-blue hover:text-accent-blue-light"
       >
-        ⚡ DevOps Commands Hub
+        ⚡ OpsDeck
       </Link>
       <div className="flex items-center gap-2">
         <span className="hidden text-[11px] text-text-muted sm:inline">
