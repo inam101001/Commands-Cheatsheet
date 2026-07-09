@@ -1,0 +1,135 @@
+import type { ToolDictionary } from "./types";
+
+const dockerDictionary: ToolDictionary = {
+  tool: "Docker",
+  binary: "docker",
+  description: "Container build and runtime engine.",
+  globalFlags: [
+    { flag: "--debug", aliases: ["-D"], description: "Enable debug output." },
+    { flag: "--host", aliases: ["-H"], description: "Daemon socket to connect to.", takesValue: true },
+    { flag: "--tlsverify", description: "Use TLS and verify the remote daemon." },
+    { flag: "--config", description: "Location of client config files.", takesValue: true },
+    { flag: "--context", aliases: ["-c"], description: "Name of the context to use.", takesValue: true },
+  ],
+  subcommands: [
+    {
+      name: "run",
+      description: "Create and start a new container from an image.",
+      flags: [
+        { flag: "--detach", aliases: ["-d"], description: "Run container in the background and print the container ID." },
+        { flag: "--interactive", aliases: ["-i"], description: "Keep STDIN open even if not attached." },
+        { flag: "--tty", aliases: ["-t"], description: "Allocate a pseudo-TTY." },
+        { flag: "--rm", description: "Automatically remove the container when it exits." },
+        { flag: "--name", description: "Assign a name to the container.", takesValue: true },
+        { flag: "--publish", aliases: ["-p"], description: "Publish a container port to the host (HOST:CONTAINER).", takesValue: true },
+        { flag: "--publish-all", aliases: ["-P"], description: "Publish all exposed ports to random host ports." },
+        { flag: "--env", aliases: ["-e"], description: "Set an environment variable.", takesValue: true },
+        { flag: "--env-file", description: "Read environment variables from a file.", takesValue: true },
+        { flag: "--volume", aliases: ["-v"], description: "Bind mount a volume (HOST:CONTAINER).", takesValue: true },
+        { flag: "--mount", description: "Attach a filesystem mount to the container (more verbose, explicit form of -v).", takesValue: true },
+        { flag: "--network", description: "Connect the container to a network.", takesValue: true },
+        { flag: "--restart", description: "Restart policy: no, on-failure[:max-retries], always, unless-stopped.", takesValue: true },
+        { flag: "--memory", aliases: ["-m"], description: "Memory limit, e.g. 512m, 2g.", takesValue: true },
+        { flag: "--cpus", description: "Number of CPUs the container can use.", takesValue: true },
+        { flag: "--user", aliases: ["-u"], description: "Username or UID to run the container process as.", takesValue: true },
+        { flag: "--workdir", aliases: ["-w"], description: "Working directory inside the container.", takesValue: true },
+        { flag: "--entrypoint", description: "Override the image's default ENTRYPOINT.", takesValue: true },
+        { flag: "--label", aliases: ["-l"], description: "Set metadata on the container.", takesValue: true },
+        { flag: "--link", description: "Legacy way to connect to another container by name.", takesValue: true },
+      ],
+    },
+    {
+      name: "build",
+      description: "Build an image from a Dockerfile.",
+      flags: [
+        { flag: "--tag", aliases: ["-t"], description: "Name and optionally a tag (name:tag).", takesValue: true },
+        { flag: "--file", aliases: ["-f"], description: "Path to the Dockerfile.", takesValue: true },
+        { flag: "--no-cache", description: "Do not use cache when building the image." },
+        { flag: "--pull", description: "Always attempt to pull a newer version of the base image." },
+        { flag: "--build-arg", description: "Set a build-time variable (ARG).", takesValue: true },
+        { flag: "--target", description: "Set the target build stage in a multi-stage build.", takesValue: true },
+        { flag: "--platform", description: "Set target platform for the build, e.g. linux/amd64.", takesValue: true },
+        { flag: "--label", description: "Set metadata for the resulting image.", takesValue: true },
+        { flag: "--squash", description: "Squash newly built layers into a single new layer (experimental)." },
+        { flag: "--network", description: "Set the networking mode used during the build.", takesValue: true },
+        { flag: "--progress", description: "Set type of build progress output: auto, plain, tty.", takesValue: true },
+      ],
+    },
+    {
+      name: "ps",
+      description: "List containers.",
+      flags: [
+        { flag: "--all", aliases: ["-a"], description: "Show all containers, including stopped ones." },
+        { flag: "--quiet", aliases: ["-q"], description: "Only display container IDs." },
+        { flag: "--filter", aliases: ["-f"], description: "Filter output based on conditions.", takesValue: true },
+        { flag: "--format", description: "Format output using a Go template.", takesValue: true },
+        { flag: "--no-trunc", description: "Don't truncate output." },
+        { flag: "--size", aliases: ["-s"], description: "Display total file sizes." },
+      ],
+    },
+    {
+      name: "exec",
+      description: "Run a command inside a running container.",
+      flags: [
+        { flag: "--interactive", aliases: ["-i"], description: "Keep STDIN open." },
+        { flag: "--tty", aliases: ["-t"], description: "Allocate a pseudo-TTY." },
+        { flag: "--user", aliases: ["-u"], description: "Run as a specific user.", takesValue: true },
+        { flag: "--workdir", aliases: ["-w"], description: "Working directory inside the container.", takesValue: true },
+        { flag: "--env", aliases: ["-e"], description: "Set an environment variable for the command.", takesValue: true },
+        { flag: "--detach", aliases: ["-d"], description: "Run the command in the background." },
+      ],
+    },
+    {
+      name: "logs",
+      description: "Fetch the logs of a container.",
+      flags: [
+        { flag: "--follow", aliases: ["-f"], description: "Follow log output." },
+        { flag: "--tail", description: "Number of lines to show from the end of the logs.", takesValue: true },
+        { flag: "--since", description: "Show logs since a timestamp or relative time (e.g. 10m).", takesValue: true },
+        { flag: "--timestamps", aliases: ["-t"], description: "Show timestamps." },
+      ],
+    },
+    {
+      name: "system prune",
+      description: "Remove unused data (stopped containers, dangling images, unused networks/volumes).",
+      flags: [
+        { flag: "--all", aliases: ["-a"], description: "Remove all unused images, not just dangling ones." },
+        { flag: "--volumes", description: "Also prune anonymous volumes." },
+        { flag: "--force", aliases: ["-f"], description: "Do not prompt for confirmation." },
+        { flag: "--filter", description: "Provide filters, e.g. until=24h.", takesValue: true },
+      ],
+    },
+    {
+      name: "images",
+      description: "List images.",
+      flags: [
+        { flag: "--all", aliases: ["-a"], description: "Show all images, including intermediate layers." },
+        { flag: "--quiet", aliases: ["-q"], description: "Only show image IDs." },
+        { flag: "--digests", description: "Show digests." },
+        { flag: "--no-trunc", description: "Don't truncate output." },
+        { flag: "--filter", aliases: ["-f"], description: "Filter output based on conditions.", takesValue: true },
+      ],
+    },
+    {
+      name: "rmi",
+      description: "Remove one or more images.",
+      flags: [
+        { flag: "--force", aliases: ["-f"], description: "Force removal of the image." },
+        { flag: "--no-prune", description: "Do not delete untagged parent images." },
+      ],
+    },
+    {
+      name: "compose up",
+      description: "Create and start containers defined in a Compose file.",
+      flags: [
+        { flag: "--detach", aliases: ["-d"], description: "Run containers in the background." },
+        { flag: "--build", description: "Build images before starting containers." },
+        { flag: "--force-recreate", description: "Recreate containers even if their config hasn't changed." },
+        { flag: "--remove-orphans", description: "Remove containers for services not in the Compose file." },
+        { flag: "--scale", description: "Scale a service to N instances (service=N).", takesValue: true },
+      ],
+    },
+  ],
+};
+
+export default dockerDictionary;

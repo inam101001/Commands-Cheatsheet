@@ -5,6 +5,11 @@ import { useRouter, usePathname } from "next/navigation";
 import { tools } from "@/data/tools";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
+// Growing list of feature pages beyond the per-tool cheatsheets. Gets a
+// proper nav (sidebar / command palette) in the M11 integration pass —
+// this flat list is the interim, extensible home for it.
+const TOOL_PAGES = [{ href: "/explain", label: "🧩 Explain" }];
+
 export function NavHeader() {
   const router = useRouter();
   const pathname = usePathname();
@@ -18,6 +23,19 @@ export function NavHeader() {
       >
         ⚡ OpsDeck
       </Link>
+      <div className="hidden items-center gap-4 md:flex">
+        {TOOL_PAGES.map((page) => (
+          <Link
+            key={page.href}
+            href={page.href}
+            className={`text-[12px] font-medium ${
+              pathname === page.href ? "text-accent-blue" : "text-text-muted hover:text-text"
+            }`}
+          >
+            {page.label}
+          </Link>
+        ))}
+      </div>
       <div className="flex items-center gap-3">
         <span className="hidden text-[11px] text-text-muted sm:inline">
           Quick Switch:
