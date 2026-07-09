@@ -14,6 +14,7 @@ const TOOL_PAGES = [
   { href: "/rosetta", label: "🌐 Rosetta" },
   { href: "/troubleshoot", label: "🧭 Troubleshoot" },
   { href: "/checklists", label: "✅ Checklists" },
+  { href: "/tools", label: "🛠️ Tools" },
 ];
 
 export function NavHeader() {
