@@ -12,6 +12,7 @@ const TOOL_PAGES = [
   { href: "/explain", label: "🧩 Explain" },
   { href: "/errors", label: "🩹 Errors" },
   { href: "/rosetta", label: "🌐 Rosetta" },
+  { href: "/troubleshoot", label: "🧭 Troubleshoot" },
 ];
 
 export function NavHeader() {

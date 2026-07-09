@@ -1,0 +1,96 @@
+import type { Flowchart } from "./types";
+
+export const dockerExitsImmediately: Flowchart = {
+  id: "docker-exits-immediately",
+  title: "Container exits immediately",
+  description: "Diagnose why a Docker container starts and then stops right away.",
+  startNodeId: "start",
+  nodes: {
+    start: {
+      id: "start",
+      type: "question",
+      text: "Does `docker logs <container>` show any output before it exits?",
+      options: [
+        { label: "No output at all", next: "check-base-image" },
+        { label: "Yes, a clear error message", next: "classify-error" },
+        { label: "Normal startup logs, then it just stops", next: "res-foreground-process" },
+      ],
+    },
+    "check-base-image": {
+      id: "check-base-image",
+      type: "question",
+      text: "Is this a minimal, distroless, or alpine base image?",
+      options: [
+        { label: "Yes", next: "res-shell-missing" },
+        { label: "No / not sure", next: "res-wrong-entrypoint" },
+      ],
+    },
+    "classify-error": {
+      id: "classify-error",
+      type: "question",
+      text: "What does the error look like?",
+      options: [
+        { label: "Permission denied", next: "res-permission" },
+        { label: "Connection refused / can't reach a host or port", next: "res-connect-refused" },
+        { label: "Missing environment variable or config file", next: "res-missing-env" },
+        { label: "Something else entirely", next: "res-generic-debug" },
+      ],
+    },
+    "res-foreground-process": {
+      id: "res-foreground-process",
+      type: "resolution",
+      text: "The main process is exiting on its own",
+      cause: "Docker containers stay alive only as long as their PID 1 process runs. If that process is a script that runs to completion, or a server that daemonizes and detaches, the container will exit even though \"nothing went wrong.\"",
+      fix: "Run the intended long-lived process in the foreground (avoid `--daemon`/detach flags for the app itself), or replace the CMD with an explicit foreground entrypoint.",
+      relatedCommands: ["docker inspect", "docker logs"],
+    },
+    "res-shell-missing": {
+      id: "res-shell-missing",
+      type: "resolution",
+      text: "No shell or binary at that path in this minimal image",
+      cause: "Distroless/alpine/minimal images often don't include a shell or common utilities, so a CMD written assuming bash or a specific tool silently fails to even start.",
+      fix: "Check the exact binary path exists in the image (`docker run --rm -it <image> sh` if a shell exists, or inspect the image layers), and use the static binary path directly in exec-form CMD.",
+      relatedCommands: ["docker run -it --entrypoint sh", "docker history"],
+    },
+    "res-wrong-entrypoint": {
+      id: "res-wrong-entrypoint",
+      type: "resolution",
+      text: "Wrong or typo'd CMD/ENTRYPOINT",
+      cause: "The command specified in the Dockerfile (or overridden at `docker run`) doesn't match what actually needs to run, or has a typo.",
+      fix: "Double check the Dockerfile's CMD/ENTRYPOINT and any override passed to `docker run`, and confirm the binary path and arguments are correct.",
+      relatedCommands: ["docker inspect", "docker run -it --entrypoint sh"],
+    },
+    "res-permission": {
+      id: "res-permission",
+      type: "resolution",
+      text: "Permission denied on a file or port",
+      cause: "The container's user doesn't have permission to execute the entrypoint, write to a mounted volume, or bind to a privileged port (below 1024) as a non-root user.",
+      fix: "Check file permissions/ownership on anything copied in or mounted, ensure the entrypoint script is executable (`chmod +x`), and use a port above 1024 or run as root if binding a privileged port is required.",
+      relatedCommands: ["docker inspect", "docker run -it --entrypoint sh"],
+    },
+    "res-connect-refused": {
+      id: "res-connect-refused",
+      type: "resolution",
+      text: "Can't reach a dependency (DB, API, another container)",
+      cause: "The app is trying to connect to something before it's ready, using the wrong hostname (like `localhost` instead of a Docker network service name), or the dependency isn't on the same network.",
+      fix: "Use the service/container name as the hostname when both are on the same Docker network, confirm the dependency is actually running, and add retry/backoff logic for startup ordering.",
+      relatedCommands: ["docker network ls", "docker network inspect", "docker ps"],
+    },
+    "res-missing-env": {
+      id: "res-missing-env",
+      type: "resolution",
+      text: "Missing required environment variable or config file",
+      cause: "The app expects an environment variable or mounted config file that wasn't provided at `docker run` / in the Compose file.",
+      fix: "Check the error for the exact variable/file name, then pass it via `-e` / `--env-file`, or mount the config file with `-v`.",
+      relatedCommands: ["docker run -e", "docker inspect"],
+    },
+    "res-generic-debug": {
+      id: "res-generic-debug",
+      type: "resolution",
+      text: "Needs manual debugging",
+      cause: "The error doesn't match a common pattern — could be app-specific configuration, a dependency version mismatch, or an issue only reproducible in this exact environment.",
+      fix: "Start the container with an overridden entrypoint (`docker run -it --entrypoint sh <image>`) to explore the filesystem and manually run the intended command to see the full error.",
+      relatedCommands: ["docker run -it --entrypoint sh", "docker logs", "docker inspect"],
+    },
+  },
+};
