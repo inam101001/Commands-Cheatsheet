@@ -25,6 +25,7 @@ export const paletteRoutes: PaletteRoute[] = [
     title: "Prometheus & Grafana Cheatsheet",
     keywords: "prometheus grafana promql alertmanager loki",
   },
+  { href: "/helm", icon: "⎈", title: "Helm Cheatsheet", keywords: "helm chart release values kubernetes" },
   { href: "/explain", icon: "🧩", title: "Command Explainer", keywords: "explain command breakdown flags" },
   { href: "/errors", icon: "🩹", title: "Error Decoder", keywords: "error decoder crashloop exitcode fix" },
   { href: "/rosetta", icon: "🌐", title: "Cloud CLI Rosetta Stone", keywords: "aws azure gcloud cli rosetta" },
@@ -80,5 +81,17 @@ export const paletteRoutes: PaletteRoute[] = [
     keywords: "kubernetes manifest validate schema yaml",
   },
   { href: "/lint", icon: "🧹", title: "Dockerfile Linter", keywords: "dockerfile lint rules best practices" },
+  {
+    href: "/glossary",
+    icon: "📚",
+    title: "Cloud-Native Glossary",
+    keywords: "glossary cncf terms definitions jargon",
+  },
+  {
+    href: "/incidents",
+    icon: "🚨",
+    title: "Incident Response Templates",
+    keywords: "postmortem incident handoff on-call oncall sre",
+  },
   { href: "/snippets", icon: "📌", title: "My Snippets", keywords: "bookmarks saved snippets favorites" },
 ];

@@ -18,6 +18,8 @@ const TOOL_PAGES = [
   { href: "/tools", label: "🛠️ Tools" },
   { href: "/validate", label: "🔍 Validate" },
   { href: "/lint", label: "🧹 Lint" },
+  { href: "/glossary", label: "📚 Glossary" },
+  { href: "/incidents", label: "🚨 Incidents" },
   { href: "/snippets", label: "📌 Snippets" },
 ];
 

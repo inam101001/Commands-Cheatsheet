@@ -7,6 +7,7 @@ import githubActions from "@/data/cheatsheets/github-actions";
 import jenkins from "@/data/cheatsheets/jenkins";
 import linux from "@/data/cheatsheets/linux";
 import prometheusGrafana from "@/data/cheatsheets/prometheus-grafana";
+import helm from "@/data/cheatsheets/helm";
 import type { CheatsheetData } from "@/data/types";
 import { buildRowAnchorMap } from "@/lib/anchors";
 
@@ -28,6 +29,7 @@ const DATASETS: Record<string, CheatsheetData> = {
   jenkins,
   linux,
   "prometheus-grafana": prometheusGrafana,
+  helm,
 };
 
 function buildIndex(): SearchEntry[] {

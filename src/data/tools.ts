@@ -81,6 +81,16 @@ export const tools: ToolMeta[] = [
     category: "monitoring",
     accentClass: "before:bg-[#e6522c]",
   },
+  {
+    slug: "helm",
+    name: "Helm",
+    icon: "⎈",
+    description:
+      "Kubernetes package manager reference — chart installs, upgrades, rollbacks, values precedence, templating, and dependency management.",
+    cmdCount: "60+ commands",
+    category: "container",
+    accentClass: "before:bg-[#0f1689]",
+  },
 ];
 
 export function getTool(slug: string): ToolMeta | undefined {
