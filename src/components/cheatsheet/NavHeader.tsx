@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 const TOOL_PAGES = [
   { href: "/explain", label: "🧩 Explain" },
   { href: "/errors", label: "🩹 Errors" },
+  { href: "/rosetta", label: "🌐 Rosetta" },
 ];
 
 export function NavHeader() {
